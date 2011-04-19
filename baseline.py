@@ -1,25 +1,73 @@
+# -*- coding=utf-8 -*-
+
+_basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+_subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
+_superchars = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
+
+def _intify(intstr):
+    '''Converts base-10, base-16, and base-2 strings to integers.
+
+    Deliberately ignores base-8, because I hate base-8.  If I ever stop
+    hating base-8, replace this whole function with a call to int(intstr,0)
+
+    >>> map(_intify,['1','02','0x03','011','0x11','0b11'])
+    [1, 2, 3, 11, 17, 3]
+    '''
+
+    if intstr.startswith('0x'):
+        return int(intstr,16)
+    elif intstr.startswith('0b'):
+        return int(intstr,2)
+    else:
+        return int(intstr,10)
 
 
 def parseline(line):
     '''Compiles a single line of baseline into bytecode.
 
     Takes a string of the form
-        INT : stuff
+        INT := stuff
+    or any freeform string containing no colon-equals digraph (comment).
 
-    Returns a triple (word,list,line), where list contains a list of (register,item) 
-    pairs.  Register is one of 'AV'.  If register is A or V, item is an
-    integer ; if register is '-' item is a string.
+    If the colon-equals is present, returns a triple (word,list,line), where
+    list contains a list of (register,item) pairs.  Register is one of 'AV';
+    each item is an integer (comments do not make it into the list).
 
-    Register is one of 'AV'; each item is an integer.  Comments (in the -
-    register) are cleaned out.
+    If the entire line is a comment, the return value is (None, [], line)
 
-    The third element of the returned triple is the input line, for debugging.
+    In either case, the third element of the returned triple is the input line,
+    for debugging.
 
+    Wow, doctests don't work on unicode.  WTF python!
 
+    >>> parseline('99 : ₈eight')
+    (99, [('V',8)], '99 : \u2088eight')
     >>> parseline('100 : ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
-    (100, [('A',23), ('A',23), ('V',45), ('A',23), ('-','66'), ('V',45), ('V',4), ('V',5), ('V',45), ('-','Hilarious')])
+    (100, [('A',23), ('A',23), ('V',45), ('A',23), ('V',45), ('V',4), ('V',5), ('V',45)],
+            u'100 : \xb2\xb3 \xb2\xb3\u2084\u2085\xb2\xb366\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')
     '''
-    wordname, sep, definition = line.partition(':')
-    if sep is '':
-        raise Exception("wtf, failed parse on this line: " + line)
-    
+    #(100, [('A',23), ('A',23), ('V',45), ('A',23), ('V',45), ('V',4), ('V',5), ('V',45)], '100 : ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
+    wordname, sep, rest = line.partition(':=')
+    if sep is not ':=':
+        return (None, [], line)
+
+    wordname = _intify(wordname.strip())    # deliberately duck exception
+
+    register = '-'
+    cc = ''
+    for c in rest:
+        if c is ' ':
+            newregister = '-'
+        elif c in _subchars:
+            newregister = 'V'
+        elif c in _superchars:
+            newregister = 'A'
+        else:
+            newregister = '-'
+        if register not in ['-', newregister]:
+            pass
+
+
+
+
+

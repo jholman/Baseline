@@ -4,24 +4,22 @@
 import getopt
 import string
 import sys
+from baseline import _basechars, _subchars, _superchars
 
-_basechars = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-_subchars  = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
-_supchars  = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
-
-
-_triples = zip(_basechars,_subchars,_supchars)
+_triples = zip(_basechars,_subchars,_superchars)
 _goodkeys = [a for a,b,c in _triples if b!=' ' and c!=' ']
-_base2sup = dict(z for z in zip(_basechars,_supchars) if z[1]!=' ' and z[0] in _goodkeys)
+_base2sup = dict(z for z in zip(_basechars,_superchars) if z[1]!=' ' and z[0] in _goodkeys)
 _base2sub = dict(z for z in zip(_basechars,_subchars) if z[1]!=' ' and z[0] in _goodkeys)
-_sup2base = dict(z for z in zip(_supchars,_basechars) if z[0]!=' ' and z[1] in _goodkeys)
+_sup2base = dict(z for z in zip(_superchars,_basechars) if z[0]!=' ' and z[1] in _goodkeys)
 _sub2base = dict(z for z in zip(_subchars,_basechars) if z[0]!=' ' and z[1] in _goodkeys)
 _base2base= dict(zip(_basechars,_basechars))
 
-def asc2bl_1(line, state='-'):
+def asc2bl_1(line, state='-', linenum=-1):
+    if ':=' not in line:
+        return line
     ans = ''
     inquote = False
-    for c in line:
+    for ci,c in enumerate(line):
         if not inquote:
             if c in '-AV':
                 state = c
@@ -35,7 +33,7 @@ def asc2bl_1(line, state='-'):
                 else: # state == 'V'
                     ans += _base2sub[c]
             else:
-                raise Exception("this character is bullshit: %s" % c)
+                raise Exception("bullshit character at line %d, column %d: %s\n%s\n%s" % (linenum+1,ci+1,c,line,' '*ci + '^'))
         else:
             if c is inquote[0]:
                 inquote2 = map(ord,inquote[1:]) + [len(inquote[1:])]
@@ -88,7 +86,7 @@ def bl2asc_1(line):
         
 
 def asc2bl(lines):
-    return [asc2bl_1(string.rstrip(line)) for line in lines]
+    return [asc2bl_1(string.rstrip(line), linenum=li) for li,line in enumerate(lines)]
 
 def bl2asc(lines):
     return [bl2asc_1(string.rstrip(line)) for line in lines]

@@ -1,0 +1,10 @@
+
+Assumptions about builtin words:
+ word 13 = { pop-top }
+ word 14 = { x = pop-top ; push-bottom(x) }
+ word 15 = { x = pop-top ; copy x elements from top to bottom ; push-bottom(x) }
+ word 22 = { fd = pop-top ; num = pop-top ; pop top num bytes from top, attempting to write them to fd ; push-top(number bytes written) }
+
+100 := A"Hello, world!"             - put string in top stack
+101 := A100 14 V(2) 22              - move byte-count to end, push fd=2 to bottom, print from bottom
+0   := A101 13                      - print"helloworld", pop
