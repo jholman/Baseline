@@ -1,5 +1,7 @@
 # -*- coding=utf-8 -*-
 
+from asc2bl import _sup2base,_sub2base
+
 _basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
 _superchars = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
@@ -40,23 +42,24 @@ def parseline(line):
 
     Wow, doctests don't work on unicode.  WTF python!
 
-    >>> parseline('99 : ₈eight')
-    (99, [('V',8)], '99 : \u2088eight')
-    >>> parseline('100 : ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
-    (100, [('A',23), ('A',23), ('V',45), ('A',23), ('V',45), ('V',4), ('V',5), ('V',45)],
-            u'100 : \xb2\xb3 \xb2\xb3\u2084\u2085\xb2\xb366\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')
+    >>> parseline(u'99 := \u2088eight ')
+    (99, [('V', 8)], u'99 := \u2088eight ')
+
     '''
-    #(100, [('A',23), ('A',23), ('V',45), ('A',23), ('V',45), ('V',4), ('V',5), ('V',45)], '100 : ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
+    #>>> parseline(u'100 := ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
+    #(100, [('A', 23), ('A', 23), ('V', 45), ('A', 23), ('V', 45), ('V', 4), ('V', 5), ('V', 45)], u'100 := \xb2\xb3 \xb2\xb3\u2084\u2085\xb2\xb366\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')
+
     wordname, sep, rest = line.partition(':=')
-    if sep is not ':=':
+    if sep != u':=':
         return (None, [], line)
 
     wordname = _intify(wordname.strip())    # deliberately duck exception
 
     register = '-'
     cc = ''
-    for c in rest:
-        if c is ' ':
+    wordlist = []
+    for ci,c in enumerate(rest.strip()):
+        if c == ' ':
             newregister = '-'
         elif c in _subchars:
             newregister = 'V'
@@ -64,10 +67,17 @@ def parseline(line):
             newregister = 'A'
         else:
             newregister = '-'
-        if register not in ['-', newregister]:
-            pass
-
-
-
+        #print c, repr(c), type(c), newregister
+        if register not in ['-', newregister] and cc != '':
+            #print "appending '%s'" % cc
+            d = _sub2base if register == 'V' else _sup2base
+            newword = _intify(''.join(map(d.get,cc)))
+            wordlist.append((register,newword))
+            cc = ''
+        if newregister != '-':
+            cc += c
+        #else: cc = ''
+        register = newregister
+    return (wordname,wordlist,line)
 
 
