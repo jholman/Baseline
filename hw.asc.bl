@@ -7,4 +7,5 @@ Assumptions about builtin words:
 
 100 := A"Hello, world!"             - put string in top stack
 101 := A100 14 V(2) 22              - move byte-count to end, push fd=2 to bottom, print from bottom
+            101 ?? A100 15 V(2) 22  - this is like the previous line, but would work even if stacks already contained data
 0   := A101 13                      - print"helloworld", pop
