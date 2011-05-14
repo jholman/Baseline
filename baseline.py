@@ -42,18 +42,17 @@ def parseline(line):
 
     Wow, doctests don't work on unicode.  WTF python!
 
-    >>> parseline(u'99 := \u2088eight ')
-    (99, [('V', 8)], u'99 := \u2088eight ')
+    >>> parseline(u'99 := \u2088\u2088eight ')
+    (99, [('V', 88)], u'99 := \u2088\u2088eight ')
 
-    '''
-    #>>> parseline(u'100 := ²³ ²³₄₅²³66₄₅ ₄ ₅ ₄₅Hilarious')
-    #(100, [('A', 23), ('A', 23), ('V', 45), ('A', 23), ('V', 45), ('V', 4), ('V', 5), ('V', 45)], u'100 := \xb2\xb3 \xb2\xb3\u2084\u2085\xb2\xb366\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')
+    >>> parseline(u'100 := \u2077\u2078 \u2077\u2078\u2084\u2085\u2077\u207866\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')
+    (100, [('A', 78), ('A', 78), ('V', 45), ('A', 78), ('V', 45), ('V', 4), ('V', 5), ('V', 45)], u'100 := \u2077\u2078 \u2077\u2078\u2084\u2085\u2077\u207866\u2084\u2085 \u2084 \u2085 \u2084\u2085Hilarious')'''
 
     wordname, sep, rest = line.partition(':=')
     if sep != u':=':
         return (None, [], line)
 
-    wordname = _intify(wordname.strip())    # deliberately duck exception
+    wordname = _intify(wordname.strip())    # deliberately allowing exception to bubble up
 
     register = '-'
     cc = ''
