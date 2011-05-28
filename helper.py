@@ -6,14 +6,70 @@ class rstack(object):
 class dstack(object):
     def __init__(self):
         self.stack = [deque()]
-    def merge(self, dq, end=1):
-        pass
-    def split(self, n=1, end=1):
+
+    def __str__(self):
+        return '\n'.join(map(str,reversed(self.stack)))
+
+    def merge(self, end=1, reverse=False):
+        # TODO: maybe implement reverse?
+        if len(self.stack) < 2:
+            return # should log INFO probably
+        if self.stack[-1].end == [None, None]:
+            self.stack.pop()
+        elif self.stack[-2].end == [None, None]:
+            self.stack.pop(-2)
+        else:
+            old_car_bottom = self.stack[-1].end[1-end]
+            old_cadr_top = self.stack[-2].end[end]
+            old_car_bottom.adj[1-end] = old_cadr_top
+            old_cadr_top.adj[end] = old_car_bottom
+            self.stack[-2].end[1] = self.stack[-1].end[1]
+            self.stack.pop()
+
+    def split(self, n=1, end=1):    # ('end' marks which end of the top deque)
         if len(self.stack) is 0:
-            # TODO: log warning
+            return # should log ERROR, stack should never be empty
+        elif n == 0:            # just want a new empty deque
+            self.stack.append(deque())
             return
         else:
-            ptr = self.stack[-1*end]
+            topdeque = self.stack[-1]
+            ptr = topdeque.end[end]
+            for i in range(n-1):
+                if not ptr.adj[1-end]:
+                    break
+                ptr = ptr.adj[1-end]
+            if ptr.adj[1-end]:
+                ptr = ptr.adj[1-end]            # now ptr is out of the split-section
+                ptr.adj[end].adj[1-end] = None
+                self.stack.append(deque(top=topdeque.end[end], bot=ptr.adj[end]))
+                ptr.adj[end] = None
+                self.stack[-2].end[end] = ptr
+            else:
+                self.stack.insert(-1, deque())
+                pass
+
+
+    def push(self, item, end=1):
+        if len(self.stack) is 0:
+            # should log ERROR, stack should never be empty
+            return
+        return self.stack[-1].push(item, end)
+
+    def push_n(self, items, end=1):
+        for item in items:
+            self.push(item, end)
+
+    def pop(self, end=1):
+        if len(self.stack) is 0:
+            # should log ERROR, stack should never be empty
+            return
+        return self.stack[-1].pop(end)
+
+    def pop_n(self, n, end=1):
+        for i in range(n):
+            self.pop(end)
+
 
 
 class deque(object):
@@ -62,7 +118,7 @@ class deque(object):
     def pop(self, end=1):
         # Pop.  Constant-time performance.
         if self.end[end] is None:
-            # TODO: log warning
+            # should log DEBUG: it's legal but might not be intended
             return None
         else:
             ans = self.end[end].value
@@ -74,12 +130,12 @@ class deque(object):
             self.end[end].adj[end] = None
         return ans
 
-    def _list_gen(self):
+    def _list_gen(self, direction=1):       # direction=1 for left-to-right
         # Helper method, returns a generator which produces the elements, from 0-end to 1-end
-        todo = self.end[0]
+        todo = self.end[1-direction]
         while todo is not None:
             yield todo
-            todo = todo.adj[1]
+            todo = todo.adj[direction]
 
     def __str__(self):
         return '<' + ', '.join(map(repr,self._list_gen())) + '>'
