@@ -1,7 +1,6 @@
 
-class rstack(object):
+class rstack(list):
     pass
-
 
 class dstack(object):
     def __init__(self):
@@ -11,7 +10,8 @@ class dstack(object):
         return '\n'.join(map(str,reversed(self.stack)))
 
     def merge(self, end=1, reverse=False):
-        # TODO: maybe implement reverse?
+        if reverse:
+            raise NotImplementedError # should log ERROR, because it's not implemented!  # TODO: implement
         if len(self.stack) < 2:
             return # should log INFO probably
         if self.stack[-1].end == [None, None]:
@@ -26,10 +26,13 @@ class dstack(object):
             self.stack[-2].end[1] = self.stack[-1].end[1]
             self.stack.pop()
 
-    def split(self, n=1, end=1):    # ('end' marks which end of the top deque)
+    def split(self, n=0, end=1):    # ('end' marks which end of the top deque)
         if len(self.stack) is 0:
             return # should log ERROR, stack should never be empty
         elif n == 0:            # just want a new empty deque
+            self.stack.append(deque())
+            return
+        elif self.stack[-1].end == [None, None]:
             self.stack.append(deque())
             return
         else:
@@ -52,24 +55,21 @@ class dstack(object):
 
     def push(self, item, end=1):
         if len(self.stack) is 0:
-            # should log ERROR, stack should never be empty
-            return
-        return self.stack[-1].push(item, end)
+            return          # should log ERROR, stack should never be empty
+        try:
+            for i in item:
+                self.push(i, end)
+        except:
+            self.stack[-1].push(item, end)
 
-    def push_n(self, items, end=1):
-        for item in items:
-            self.push(item, end)
-
-    def pop(self, end=1):
+    def pop(self, end=1, n=1):
         if len(self.stack) is 0:
             # should log ERROR, stack should never be empty
             return
-        return self.stack[-1].pop(end)
-
-    def pop_n(self, n, end=1):
+        ans = []
         for i in range(n):
-            self.pop(end)
-
+            ans.append(self.stack[-1].pop(end))
+        return ans
 
 
 class deque(object):
