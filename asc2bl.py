@@ -1,14 +1,9 @@
 #!/usr/bin/python
-# -*- coding=utf-8 -*-
 
 import getopt
 import string
 import sys
-#from baseline import _basechars, _subchars, _superchars
-
-_basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-_subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
-_superchars = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
+from baseline import _basechars, _subchars, _superchars
 
 _triples = zip(_basechars,_subchars,_superchars)
 _goodkeys = [a for a,b,c in _triples if b!=' ' and c!=' ']

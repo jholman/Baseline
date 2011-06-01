@@ -3,7 +3,7 @@
 # Call me like this:
 # pywatch 'python testme.py' *.py
 
-import helper
+from baseline import helper
 
 stuff_to_do = '''
 d = helper.deque(1)
