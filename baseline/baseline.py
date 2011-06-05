@@ -1,10 +1,13 @@
 # -*- coding=utf-8 -*-
 
 from asc2bl import _sup2base,_sub2base
+import helper
 
-_basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-_subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
-_superchars = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
+#from baseline import _basechars, _subchars, _superchars
+
+#_basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#_subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
+#_superchars = u"⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚ᵃᵇᶜᵈᵉᶠᵍʰⁱʲᵏˡᵐⁿᵒᵖ ʳˢᵗᵘᵛʷˣʸᶻᴬᴮ ᴰᴱ ᴳᴴᴵᴶᴷᴸᴹᴺᴼᴾ ᴿ ᵀᵁⱽᵂ   "
 
 def _intify(intstr):
     '''Converts base-10, base-16, and base-2 strings to integers.
@@ -78,5 +81,17 @@ def parseline(line):
         #else: cc = ''
         register = newregister
     return (wordname,wordlist,line)
+
+
+
+class BaselineEnv(object):
+    def __init__(self):
+        self.rstack = helper.rstack()
+        self.dstack = helper.dstack()
+        self.fns = dict{}
+        self.pipes = dict{  0: sys.stdin,
+                            1: sys.stdout
+                            2: sys.stderr
+                            }
 
 

@@ -3,8 +3,8 @@ class rstack(list):
     pass
 
 class dstack(object):
-    def __init__(self):
-        self.stack = [deque()]
+    def __init__(self, iterable = ()):
+        self.stack = [deque(*iterable)]
 
     def __str__(self):
         return '\n'.join(map(str,reversed(self.stack)))
@@ -52,15 +52,14 @@ class dstack(object):
                 self.stack.insert(-1, deque())
                 pass
 
-
-    def push(self, item, end=1):
+    def append(self, item, end=1):
         if len(self.stack) is 0:
             return          # should log ERROR, stack should never be empty
         try:
             for i in item:
-                self.push(i, end)
+                self.append(i, end)
         except:
-            self.stack[-1].push(item, end)
+            self.stack[-1].append(item, end)
 
     def pop(self, end=1, n=1):
         if len(self.stack) is 0:
@@ -73,8 +72,10 @@ class dstack(object):
 
 
 class deque(object):
-    # Represents a single deque, for storing arbitrary values.
-    # Implementated as a doubly-linked list.
+    """A polymorphic double-ended queue, implemented as a linked list.
+
+    Attempts to copy the interface of the built-in list object as much as
+    possible, including iterability and most container behaviour."""
 
     class elt(object):
         # Utility class to encapsulate the inter-element links
@@ -93,7 +94,7 @@ class deque(object):
         self.end = [None,None]
         if kwargs.keys() == []:
             for i in argv:
-                self.push(i)
+                self.append(i)
         elif sorted(kwargs.keys()) == ['bot','top']:
             self.end[0] = kwargs['bot']
             self.end[1] = kwargs['top']
@@ -102,8 +103,7 @@ class deque(object):
         else:
             raise ValueError("deque constructor must either contain both 'top' and 'bot' keyword arguments, or none")
 
-
-    def push(self, item, end=1):
+    def append(self, item, end=1):
         # Push.  Constant-time performance.
         if end not in [0,1]:
             raise IndexError("%s is not a valid end-index for a deque (valid: 0 or 1)" % end)
@@ -114,6 +114,10 @@ class deque(object):
             self.end[end] = self.elt(item)
             tmpend.adj[end] = self.end[end]
             self.end[end].adj[1-end] = tmpend
+
+    def extend(self, iterable, end=1):
+        for i in iterable:
+            self.append(i, end)
 
     def pop(self, end=1):
         # Pop.  Constant-time performance.
@@ -130,18 +134,29 @@ class deque(object):
             self.end[end].adj[end] = None
         return ans
 
-    def _list_gen(self, direction=1):       # direction=1 for left-to-right
-        # Helper method, returns a generator which produces the elements, from 0-end to 1-end
+    def __iter__(self, direction=1):       # direction=1 for left-to-right
         todo = self.end[1-direction]
         while todo is not None:
-            yield todo
+            yield todo.value
             todo = todo.adj[direction]
 
+    def __reversed__(self):
+        return self.__iter__(0)
+
     def __str__(self):
-        return '<' + ', '.join(map(repr,self._list_gen())) + '>'
+        return '<' + ', '.join(map(repr,self.__iter__())) + '>'
 
     def __repr__(self):
-        return 'deque(' + ', '.join(map(lambda x: repr(x.value),self._list_gen())) + ')'
+        return 'deque(' + ', '.join(map(lambda x: repr(x.value),self.__iter__())) + ')'
+
+    def __len__(self):
+        ans = 0
+        todo = self.end[0];
+        while todo is not None:
+            ans += 1
+            todo = todo.adj[1]
+        return ans
+
 
 
 
