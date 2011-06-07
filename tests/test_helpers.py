@@ -86,6 +86,7 @@ class TestDStack():
         ds.merge()
         assert map(list, ds) == [[1], [], [4, 5, 2, 3]]
 
+    ### TODO: test "pop" and also I have no working "reverse" split/merge
 
 
 
