@@ -7,7 +7,10 @@ class dstack(object):
         self.stack = [deque(*iterable)]
 
     def __str__(self):
-        return '\n'.join(map(str,reversed(self.stack)))
+        return '[' + ',\n'.join(map(str,reversed(self.stack))) + ']'
+
+    def __iter__(self):
+        return (x for x in self.stack)
 
     def merge(self, end=1, reverse=False):
         if reverse:
@@ -26,7 +29,9 @@ class dstack(object):
             self.stack[-2].end[1] = self.stack[-1].end[1]
             self.stack.pop()
 
-    def split(self, n=0, end=1):    # ('end' marks which end of the top deque)
+    def split(self, n=0, end=1, reverse=False):    # ('end' marks which end of the top deque)
+        if reverse:
+            raise NotImplementedError # should log ERROR, because it's not implemented!  # TODO: implement
         if len(self.stack) is 0:
             return # should log ERROR, stack should never be empty
         elif n == 0:            # just want a new empty deque
@@ -45,21 +50,23 @@ class dstack(object):
             if ptr.adj[1-end]:
                 ptr = ptr.adj[1-end]            # now ptr is out of the split-section
                 ptr.adj[end].adj[1-end] = None
-                self.stack.append(deque(top=topdeque.end[end], bot=ptr.adj[end]))
+                if end:
+                    self.stack.append(deque(top=topdeque.end[end], bot=ptr.adj[end]))
+                else:
+                    self.stack.append(deque(top=ptr.adj[end], bot=topdeque.end[end]))
                 ptr.adj[end] = None
                 self.stack[-2].end[end] = ptr
             else:
                 self.stack.insert(-1, deque())
-                pass
 
     def append(self, item, end=1):
         if len(self.stack) is 0:
             return          # should log ERROR, stack should never be empty
-        try:
-            for i in item:
-                self.append(i, end)
-        except:
-            self.stack[-1].append(item, end)
+        self.stack[-1].append(item, end)
+
+    def extend(self, items, end=1):
+        for i in items:
+            self.append(i, end)
 
     def pop(self, end=1, n=1):
         if len(self.stack) is 0:
@@ -144,7 +151,8 @@ class deque(object):
         return self.__iter__(0)
 
     def __str__(self):
-        return '<' + ', '.join(map(repr,self.__iter__())) + '>'
+        return '<' + ', '.join(map(repr,self.__iter__(1))) + '>'
+        #return '<' + ', '.join(map(repr,reversed(self.__iter__(0)))) + '>'
 
     def __repr__(self):
         return 'deque(' + ', '.join(map(lambda x: repr(x.value),self.__iter__())) + ')'

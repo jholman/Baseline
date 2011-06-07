@@ -45,6 +45,48 @@ class TestDeque():
 
 
 class TestDStack():
-    pass
+    def test_init(self):
+        ds = dstack()
+        assert map(list, list(ds)) == [[]]
+        ds = dstack([1, 2, 4])
+        assert map(list, list(ds)) == [[1, 2, 4]]
+
+    def test_append_and_extend(self):
+        ds = dstack()
+        ds.append(2)
+        assert map(list, list(ds)) == [[2]]
+        ds.append('q', 0)
+        ds.append('r', 1)
+        assert map(list, list(ds)) == [['q', 2, 'r']]
+        ds.extend([3, 4], 0)
+        ds.extend([5, 6], 1)
+        assert map(list, list(ds)) == [[4, 3, 'q', 2, 'r', 5, 6]]
+
+    def test_merge_split(self):
+        ds = dstack([1, 2, 3])
+        ds.split()
+        assert map(list, ds) == [[1, 2, 3], []]
+        ds.merge()
+        assert map(list, ds) == [[1, 2, 3]]
+        ds.merge()
+        assert map(list, ds) == [[1, 2, 3]]
+        ds.split(1)
+        assert map(list, ds) == [[1, 2], [3]]
+        ds.merge()
+        ds.split(2)
+        assert map(list, ds) == [[1], [2, 3]]
+        ds.split(2)
+        assert map(list, ds) == [[1], [], [2, 3]]
+        ds.split(5)
+        assert map(list, ds) == [[1], [], [], [2, 3]]
+        ds.extend([4,5])
+        ds.split(2,0)
+        assert map(list, ds) == [[1], [], [], [4, 5], [2, 3]]
+        ds.merge()
+        ds.merge()
+        assert map(list, ds) == [[1], [], [4, 5, 2, 3]]
+
+
+
 
 
