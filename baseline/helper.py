@@ -17,7 +17,7 @@ class dstack(object):
             raise NotImplementedError # should log ERROR, because it's not implemented!  # TODO: implement
         if len(self.stack) < 2:
             return # should log INFO probably
-        if self.stack[-1].end == [None, None]:
+        elif self.stack[-1].end == [None, None]:
             self.stack.pop()
         elif self.stack[-2].end == [None, None]:
             self.stack.pop(-2)
@@ -26,7 +26,7 @@ class dstack(object):
             old_cadr_top = self.stack[-2].end[end]
             old_car_bottom.adj[1-end] = old_cadr_top
             old_cadr_top.adj[end] = old_car_bottom
-            self.stack[-2].end[1] = self.stack[-1].end[1]
+            self.stack[-2].end[end] = self.stack[-1].end[end]
             self.stack.pop()
 
     def split(self, n=0, end=1, reverse=False):    # ('end' marks which end of the top deque)
