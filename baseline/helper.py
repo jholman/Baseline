@@ -68,14 +68,12 @@ class dstack(object):
         for i in items:
             self.append(i, end)
 
-    def pop(self, end=1, n=1):
+    def pop(self, end=1):
         if len(self.stack) is 0:
             # should log ERROR, stack should never be empty
             return
-        ans = []
-        for i in range(n):
-            ans.append(self.stack[-1].pop(end))
-        return ans
+        return self.stack[-1].pop(end)
+
 
 
 class deque(object):

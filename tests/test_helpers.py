@@ -104,6 +104,16 @@ class TestDStack():
 
     ### TODO: test "pop" and also I have no working "reverse" split/merge
 
+    def test_pop(self):
+        ds = dstack([1, 2, 3, 4, 5])
+        x = ds.pop()
+        assert x == 5
+        assert map(list, ds) == [[1, 2, 3, 4]]
+        ds.split(2)
+        ds.merge(0)
+        x = ds.pop(0)
+        assert x == 3
+        assert map(list, ds) == [[4, 1, 2]]
 
 
 
