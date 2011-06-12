@@ -15,6 +15,14 @@ operator_indices = [_basechars.index(c) for c in operator_bases]
 operators = ''.join(r[i] for r in __registers for i in operator_indices)
 parens = [r[_basechars.index(baseparen)] for r in __registers for baseparen in "()"]
 
+class richtoken(object):
+    def __init__(self, typ, reg, val, t, loc=(0,)):
+        self.typ, self.reg, self.val, self.tok, self.loc = typ, reg, val, t, loc
+    def __repr__(self):
+        return "richtoken(%s, %s, %s, %s, %s)" % tuple(map(repr,[self.typ, self.reg, self.val, self.tok, self.loc]))
+    def __eq__(self, other):
+        return issubclass(other.__class__, self.__class__) and self.__dict__ == other.__dict__
+
 
 # TODO: this function is an inelegant mess
 def classify_token(string):
@@ -49,6 +57,7 @@ def classify_token(string):
 
 
 def tokenize_line(line):
+    # token output format:  richtoken(type, register, value, token, location)
     pattern = "[%s]+|[%s]+|[%s]|" % (__subdigits, __superdigits, operators)
     pattern += "|".join("%s+"%p for p in parens)
 
@@ -57,9 +66,26 @@ def tokenize_line(line):
     richtokens = []
     offset = 0
     for t in tokens:
-        richtokens.append(tuple((classify_token(t), t, (offset,))))
+        typ, reg, val = classify_token(t)
+        richtokens.append(richtoken(typ, reg, val, t, (offset,)))
         offset += len(t)
                     
     return richtokens
+
+
+def parse_fundef(line):
+    tokens = filter(lambda x: x.typ != "comment", tokenize_line(line))
+
+    pprint(tokens)      # TODO: delete me
+
+    if len(tokens) == 0:
+        return None
+    if len(tokens) < 3:
+        raise ValueError("you need more than a couple of tokens to make a line")
+    if tokens[0].typ != 'number' or tokens[0].reg == None:
+        raise ValueError("fundefs must start with a number in a register")
+    if tokens[1].val != u'₌' and tokens[1].val != u'⁼':
+        raise ValueError("fundefs must use = to assign operations to a function-id")
+
 
 
