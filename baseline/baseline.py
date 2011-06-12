@@ -1,6 +1,6 @@
 # -*- coding=utf-8 -*-
 
-from asc2bl import _sup2base,_sub2base
+from . import _super2base, _sub2base, _subchars, _superchars
 import helper
 
 #from baseline import _basechars, _subchars, _superchars
@@ -72,7 +72,7 @@ def parseline(line):
         #print c, repr(c), type(c), newregister
         if register not in ['-', newregister] and cc != '':
             #print "appending '%s'" % cc
-            d = _sub2base if register == 'V' else _sup2base
+            d = _sub2base if register == 'V' else _super2base
             newword = _intify(''.join(map(d.get,cc)))
             wordlist.append((register,newword))
             cc = ''
@@ -88,10 +88,10 @@ class BaselineEnv(object):
     def __init__(self):
         self.rstack = helper.rstack()
         self.dstack = helper.dstack()
-        self.fns = dict{}
-        self.pipes = dict{  0: sys.stdin,
-                            1: sys.stdout
-                            2: sys.stderr
-                            }
+        self.fns = {}
+        self.pipes = {  0: sys.stdin,
+                        1: sys.stdout,
+                        2: sys.stderr,
+                        }
 
 
