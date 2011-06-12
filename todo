@@ -1,0 +1,95 @@
+Tasks:
+* fundef tokenizer (rewrite existing one)
+* fundef parser
+* write super-retarded interpreter stub:
+    * initialize all data zones
+        * note: rstack format:
+            * your return location is a pair: fn-id, instruction-index
+            * these are pushed onto the rstack as two elements
+            * the inidx goes on first, then then fnid
+    * on program termination, spits out existing dstack, as a temporary measure
+    * read in function definitions into dictionary
+    * make 0 the default main
+* implement literal-push
+* implement some core functions
+    * pop, clone, split, merge, move-to-bottom
+    * the arithmetic functions
+    * flowcontrol: call, if-then, 
+* implement function calls from functions
+* flesh out the stdlib
+
+
+
+
+
+
+
+
+
+What commands get what function-ids?
+
+stack commands
+     1      pop
+     2      clone
+     3      move-to-bottom
+     5      split
+*    6      split-reverse
+     7      merge
+     8      swap-with-rstack
+    
+extra stack commands
+*   11      pop-n
+*   12      close-n
+*   13      move-to-bottom-n
+    
+pipes
+    21      produce
+    22      consume
+    23      open file
+    24      open unix socket
+    25      open TCP socket
+    29      send UDP datagram
+    
+flowcontrol
+    31      call (unconditional)
+    32      recurse call (to self)
+    33      if-then
+    34      if-then-else
+    35      goto
+
+
+arithmetic
+    51      +
+    52      -
+    53      *
+    54      /
+    55      %
+    56      ^
+    57      log
+
+binary arithmetic
+    61      !
+    62      &&
+    63      ||
+    64      wordwise xor
+
+bitwise arithmetic
+    71      bitwise not
+    72      &
+    73      |
+    74      bitwise xor
+    75      <<
+    76      >>
+
+comparisons
+    81      <
+    82      <=
+    83      ==
+    84      >=
+    85      >
+    86      !=
+
+
+
+
+
