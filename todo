@@ -1,22 +1,22 @@
 Tasks:
-* fundef tokenizer (rewrite existing one)
-* fundef parser
-* write super-retarded interpreter stub:
-    * initialize all data zones
-        * note: rstack format:
-            * your return location is a pair: fn-id, instruction-index
-            * these are pushed onto the rstack as two elements
-            * the inidx goes on first, then then fnid
-    * on program termination, spits out existing dstack, as a temporary measure
-    * read in function definitions into dictionary
-    * make 0 the default main
-* implement literal-push
-* implement some core functions
-    * pop, clone, split, merge, move-to-bottom
-    * the arithmetic functions
-    * flowcontrol: call, if-then, 
-* implement function calls from functions
-* flesh out the stdlib
+[✓] fundef tokenizer (rewrite existing one)
+[✓] fundef parser
+[ ] write super-retarded interpreter stub:
+    [ ] initialize all data zones
+        [ ] note: rstack format:
+            [ ] your return location is a pair: fn-id, instruction-index
+            [ ] these are pushed onto the rstack as two elements
+            [ ] the inidx goes on first, then then fnid
+    [ ] on program termination, spits out existing dstack, as a temporary measure
+    [ ] read in function definitions into dictionary
+    [ ] make 0 the default main
+[ ] implement literal-push
+[ ] implement some core functions
+    [ ] pop, clone, split, merge, move-to-bottom
+    [ ] the arithmetic functions
+    [ ] flowcontrol: call, if-then, 
+[ ] implement function calls from functions
+[ ] flesh out the stdlib
 
 
 

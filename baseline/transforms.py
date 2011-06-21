@@ -1,11 +1,8 @@
 # -*- coding=utf-8 -*-
 
-#from baseline import _basechars
 from . import _basechars, _subchars, _superchars, _sub2base, _super2base
 import re
 from pprint import pprint
-
-
 
 __registers = _subchars, _superchars
 __subdigits = _subchars[:10]

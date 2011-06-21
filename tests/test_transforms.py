@@ -57,7 +57,6 @@ class TestParsing():
         fnid, fnbody = transforms.parse_fundef(line)
         assert len(fnbody) == 4
         assert [t.reg for t in fnbody] == ['up', 'up', 'down', 'down']
-        
 
     def test_parse_literals(self):
         line = u'¹⁰⁰ ⁼ ⁷⁸₍₍₄₅ ₅₄₎₎₄₍₅₎⁷⁸⁽⁽¹⁰ ¹¹⁾⁾'
