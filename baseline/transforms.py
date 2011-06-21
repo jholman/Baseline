@@ -40,10 +40,10 @@ def classify_token(string):
     if string[0] == " ":
         pass
     elif string[0] in _superchars:
-        register = "up"
+        register = 1
         conversion = _super2base.get
     elif string[0] in _subchars:
-        register = "down"
+        register = 0
         conversion = _sub2base.get
 
     value = ''.join(conversion(l) for l in string)

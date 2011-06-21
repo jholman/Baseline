@@ -30,10 +30,10 @@ class TestLexing():
         line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸₍₍₄₅₎₎⁷⁸66₄₅ ₄₍₅₎'
         tokens = transforms.tokenize_line(line)
         pprint(tokens)
-        assert tokens[0] == richtoken('number', 'up', 100, u'¹⁰⁰', (0,))
-        assert tokens[8] == richtoken('number', 'down', 45, u'₄₅', (13,))
+        assert tokens[0] == richtoken('number', 1, 100, u'¹⁰⁰', (0,))
+        assert tokens[8] == richtoken('number', 0, 45, u'₄₅', (13,))
         registers = [t.reg for t in tokens if t.typ != 'comment']
-        assert registers == ['up', 'up', 'up', 'up', 'down', 'down', 'down', 'up', 'down', 'down', 'down', 'down', 'down']
+        assert registers == [1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         types = [t.typ for t in tokens if t.typ != 'comment']
         assert types == ['number','operator','number','number','paren','number','paren','number','number','number','paren','number','paren']
 
@@ -56,13 +56,13 @@ class TestParsing():
         line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸66₄₅ ₄'
         fnid, fnbody = transforms.parse_fundef(line)
         assert len(fnbody) == 4
-        assert [t.reg for t in fnbody] == ['up', 'up', 'down', 'down']
+        assert [t.reg for t in fnbody] == [1, 1, 0, 0]
 
     def test_parse_literals(self):
         line = u'¹⁰⁰ ⁼ ⁷⁸₍₍₄₅ ₅₄₎₎₄₍₅₎⁷⁸⁽⁽¹⁰ ¹¹⁾⁾'
         fnid, fnbody = transforms.parse_fundef(line)
         assert len(fnbody) == 10
-        assert [t.reg for t in fnbody] == ['up', 'down', 'down', 'down', 'down', 'down', 'up', 'up', 'up', 'up']
+        assert [t.reg for t in fnbody] == [1, 0, 0, 0, 0, 0, 1, 1, 1, 1]
         assert [t.val for t in fnbody if t.typ == 'literal'] == [45, 54, 2, 5, 10, 11, 2]
 
 
