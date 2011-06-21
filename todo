@@ -2,11 +2,12 @@ Tasks:
 [✓] fundef tokenizer (rewrite existing one)
 [✓] fundef parser
 [ ] write super-retarded interpreter stub:
-    [ ] initialize all data zones
+    [✓] initialize all data zones
         [ ] note: rstack format:
             [ ] your return location is a pair: fn-id, instruction-index
             [ ] these are pushed onto the rstack as two elements
             [ ] the inidx goes on first, then then fnid
+            [ ] inidx is negative if we're in inverse mode
     [ ] on program termination, spits out existing dstack, as a temporary measure
     [ ] read in function definitions into dictionary
     [ ] make 0 the default main
@@ -48,7 +49,8 @@ pipes
     23      open file
     24      open unix socket
     25      open TCP socket
-    29      send UDP datagram
+    27      send UDP datagram
+    29      sys.exit                    takes one int if avail, defaults to 0
     
 flowcontrol
     31      call (unconditional)

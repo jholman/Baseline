@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 
-from . import _super2base, _sub2base, _subchars, _superchars
-import helper
+#from baseline import _super2base, _sub2base, _subchars, _superchars
+#import helper
 
 #from baseline import _basechars, _subchars, _superchars
 

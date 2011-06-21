@@ -127,7 +127,7 @@ def parse_fundef(line):
         else:
             raise Exception("parser's state machine went haywire")
 
-    if function_id.reg == 'down':
+    if function_id.reg == 0:
         # TODO: invert all registers if function_id.reg is 'down'
         pass
     return function_id.val, newtokens
