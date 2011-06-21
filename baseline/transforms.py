@@ -63,29 +63,75 @@ def tokenize_line(line):
 
     tokens = filter(lambda s: len(s)>0,re.split("(%s)" % pattern,line))
 
-    richtokens = []
+    newtokens = []
     offset = 0
     for t in tokens:
         typ, reg, val = classify_token(t)
-        richtokens.append(richtoken(typ, reg, val, t, (offset,)))
+        newtokens.append(richtoken(typ, reg, val, t, (offset,)))
         offset += len(t)
                     
-    return richtokens
+    return newtokens
 
 
 def parse_fundef(line):
+    # TODO: fix up all the stupid parse exceptions, so that they do something useful with all that tok/loc I'm passing around
     tokens = filter(lambda x: x.typ != "comment", tokenize_line(line))
-
-    pprint(tokens)      # TODO: delete me
 
     if len(tokens) == 0:
         return None
     if len(tokens) < 3:
-        raise ValueError("you need more than a couple of tokens to make a line")
-    if tokens[0].typ != 'number' or tokens[0].reg == None:
+        raise ValueError("you need more than a couple of tokens to make a function definition")
+    if tokens[0].typ != 'number' or not tokens[0].reg:
         raise ValueError("fundefs must start with a number in a register")
-    if tokens[1].val != u'₌' and tokens[1].val != u'⁼':
+    if tokens[1].val != u'='     or not tokens[1].reg:
         raise ValueError("fundefs must use = to assign operations to a function-id")
 
+    function_id = tokens[0]
+    assign_op = tokens[1]
+    tokens = tokens[2:]
 
+    # At this point, `tokens` is the function body, and has at least one element
+    # Now we enter a tediously hand-coded State Machine
+    newtokens = []
+    state = 'plain'
+    counter, state_reg, state_num = None, None, None
+    while len(tokens):
+        head = tokens.pop(0)
+        if state == 'plain':
+            if head.typ == 'number':
+                newtokens.append(richtoken('fncall', head.reg, head.val, head.tok, head.loc))
+            elif head.typ == 'paren':
+                if len(head.val) not in [1, 2]:
+                    raise Exception("SYNTAX ERROR OMG, what the hell is this mass of parens?")     # TODO: something useful
+                if head.val not in ["(", "(("]:
+                    raise Exception("SYNTAX ERROR OMG, why am I seeing a close-paren right now?")     # TODO: something useful
+                state = 'literal'
+                counter = 0
+                state_reg = head.reg
+                state_num = len(head.val)
+            else:
+                raise NotImplementedError("operators are not currently well-defined inside function bodies")
+        elif state == 'literal':
+            if head.typ == 'number':
+                if head.reg == state_reg:
+                    newtokens.append(richtoken('literal', head.reg, head.val, head.tok, head.loc))
+                    counter += 1
+                else:
+                    raise Exception("SYNTAX ERROR OMG, why can't you stay in the register of the parens?!?")    # TODO: something useful
+            elif head.typ == 'paren':
+                if state_reg == head.reg and len(head.val) == state_num:
+                    if state_num == 2:
+                        newtokens.append(richtoken('literal', head.reg, counter, head.tok, head.loc))
+                    state = 'plain'
+                else:
+                    raise Exception("SYNTAX ERROR OMG, you've gotta close the parens you opened")     # TODO: something useful
+            else:
+                raise NotImplementedError("operators are not currently well-defined inside function bodies")
+        else:
+            raise Exception("parser's state machine went haywire")
+
+    if function_id.reg == 'down':
+        # TODO: invert all registers if function_id.reg is 'down'
+        pass
+    return function_id.val, newtokens
 
