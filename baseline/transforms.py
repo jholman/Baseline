@@ -55,6 +55,7 @@ def classify_token(string):
 
 def tokenize_line(line):
     # token output format:  richtoken(type, register, value, token, location)
+    line = line.split("#")[0]       # '#' marks comments to end-of-line
     pattern = "[%s]+|[%s]+|[%s]|" % (__subdigits, __superdigits, operators)
     pattern += "|".join("%s+"%p for p in parens)
 

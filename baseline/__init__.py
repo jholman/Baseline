@@ -35,8 +35,10 @@ def main(argv):
     #   and really should be replaced with something more intelligent
 
     fns = dict(filter(None, (parse_fundef(unicode(l, 'utf-8')) for l in args.infile)))
-    from pprint import pprint
-    pprint(fns)
+
+
+    #from pprint import pprint
+    #pprint(fns)
 
     env = BaselineRuntime(fundefs = fns)
     env.run()
