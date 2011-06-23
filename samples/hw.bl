@@ -1,10 +1,10 @@
+# -*- coding=utf-8 -*-
 
 Assumptions :
- word 13 = { pop-top }
- word 14 = { x = pop-top ; push-bottom(x) }
- word 15 = { x = pop-top ; copy x elements from top to bottom ; push-bottom(x) }
- word 22 = { fd = pop-top ; num = pop-top ; pop top num bytes from top, attempting to write them to fd ; push-top(number bytes written) }
+ word 1 = { pop-top }
+ word 3 = { x = pop-top ; push-bottom(x) }
+ word 21 = { fd = pop-top ; num = pop-top ; pop top num bytes from top, attempting to write them to fd ; push-top(number bytes written) }
 
-100 := (72 101 108 108 111 44 32 119 111 114 108 100 33 13)              put string in top stack
-101 := ¹⁰⁰ ¹⁴ ₍₂₎ ₂₂               move bytecount to end, push fd=2 to bottom, print from bottom
-0   := ¹⁰¹ ¹³                       print"helloworld", pop
+¹⁰⁰ ⁼ ⁽⁽⁷² ¹⁰¹ ¹⁰⁸ ¹⁰⁸ ¹¹¹ ⁴⁴ ³² ¹¹⁹ ¹¹¹ ¹¹⁴ ¹⁰⁸ ¹⁰⁰ ³³⁾⁾   put string in top stack
+¹⁰¹ ⁼ ¹⁰⁰ ³ ₍₂₎ ₂₁                                          move bytecount to end, push fd=2 to bottom, print from bottom
+⁰   ⁼ ¹⁰¹ ¹                                                 print"helloworld", pop

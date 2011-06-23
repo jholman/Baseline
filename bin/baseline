@@ -2,21 +2,6 @@
 
 import sys, os
 sys.path.append(os.path.abspath(sys.path[0]+"/.."))      # How unhappy am I with this?  VERY.
-
-#from pprint import pprint
-#pprint(sys.path)
-
 import baseline
-sys.exit(baseline.main(sys.argv))
+sys.exit(baseline.main(sys.argv[1:]))
 
-#def main(argv=None):
-#    if argv is None:
-#        argv = sys.argv
-#    # do argparsing
-#    # set up environment
-#    # process program
-#    # run program!
-#
-#
-#if __name__ == "__main__":
-#    sys.exit(main())

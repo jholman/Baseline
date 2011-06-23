@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 
+import sys
 import argparse
-#import baseline.runtime.BaselineRuntime
 
 _basechars  = u"0123456789+-=()<>^_.abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 _subchars   = u"₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳ₐ   ₑ   ᵢ     ₒ  ᵣ  ᵤᵥ ₓ                            "
@@ -21,10 +21,19 @@ del a, b, c, __triples, __goodkeys
 
 
 def main(argv):
-    import baseline
-    print baseline
+    from baseline.runtime import BaselineRuntime
+    from baseline.transforms import parse_fundef
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', type=argparse.FileType('r'))
+    args = parser.parse_args(argv)
 
-    #env = baseline.runtime.BaselineRuntime
+    
+    # TODO: the "unicode(l, 'utf-8')" in the next line is only poorly understood,
+    #   and really should be replaced with something more intelligent
+
+    fns = dict(filter(None, (parse_fundef(unicode(l, 'utf-8')) for l in args.infile)))
+    from pprint import pprint
+    pprint(fns)
+
+    env = BaselineRuntime(fundefs = fns)
 

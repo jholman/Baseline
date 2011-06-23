@@ -1,4 +1,5 @@
-#from baseline import helper
+import sys
+from baseline import helper
 
 
 class BaselineRuntime(object):

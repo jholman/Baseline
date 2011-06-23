@@ -1,5 +1,6 @@
 # -*- coding=utf-8 -*-
 
+
 from . import _basechars, _subchars, _superchars, _sub2base, _super2base
 import re
 from pprint import pprint
@@ -7,8 +8,7 @@ from pprint import pprint
 __registers = _subchars, _superchars
 __subdigits = _subchars[:10]
 __superdigits = _superchars[:10]
-operator_bases = "+-=<>^_"
-operator_indices = [_basechars.index(c) for c in operator_bases]
+operator_indices = [_basechars.index(c) for c in "+-=<>^_"]
 operators = ''.join(r[i] for r in __registers for i in operator_indices)
 parens = [r[_basechars.index(baseparen)] for r in __registers for baseparen in "()"]
 
