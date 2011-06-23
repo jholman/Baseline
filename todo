@@ -4,22 +4,30 @@ Tasks:
 [ ] write super-retarded interpreter stub:
     [✓] initialize all data zones
         [ ] note: rstack format:
-            [ ] your return location is a pair: fn-id, instruction-index
-            [ ] these are pushed onto the rstack as two elements
-            [ ] the inidx goes on first, then then fnid
+            [✓] your return location is a pair: fn-id, instruction-index
+            [✓] these are pushed onto the rstack as two elements
+            [✓] the inidx goes on first, then then fnid
             [ ] inidx is negative if we're in inverse mode
-    [ ] on program termination, spits out existing dstack, as a temporary measure
+    [✓] on program termination, spits out existing dstack, as a temporary measure
     [✓] read in function definitions into dictionary
-    [ ] make 0 the default main
-[ ] implement literal-push
+    [✓] make 0 the default main
+[✓] implement literal-push
 [ ] implement some core functions
-    [ ] pop, clone, split, merge, move-to-bottom
+    [✓] pop, clone, move-to-bottom
+    [ ] split, merge
+    [✓] stdin-only variant of pipes_produce (needed for Hello World)
     [ ] the arithmetic functions
     [ ] flowcontrol: call, if-then, 
-[ ] implement function calls from functions
+[✓] implement function calls from functions
+[ ] write decorator to make stdlib-writing easier
 [ ] flesh out the stdlib
 
 
+Stuff I glossed over:
+* proper handling of 0-register, in a LOT of places
+* unit-test development is way behind, now
+* pipes code is totally non-general, of course
+* my function nametable doesn't allow mixed baseline/python implementations, which was a goal
 
 
 

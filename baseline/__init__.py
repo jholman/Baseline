@@ -39,4 +39,5 @@ def main(argv):
     pprint(fns)
 
     env = BaselineRuntime(fundefs = fns)
+    env.run()
 
