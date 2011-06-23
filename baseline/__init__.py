@@ -18,11 +18,14 @@ _base2base  = dict(zip(_basechars,_basechars))
 del a, b, c, __triples, __goodkeys
 
 
+# If these are earlier in the file than the constant-definitions 
+#   (e.g. _basechars), then infinite recursirve import causes a crash.
+# Probably that means I'm doing something stylistically stupid.
+from .runtime import BaselineRuntime
+from .transforms import parse_fundef
 
 
 def main(argv):
-    from baseline.runtime import BaselineRuntime
-    from baseline.transforms import parse_fundef
     parser = argparse.ArgumentParser()
     parser.add_argument('infile', type=argparse.FileType('r'))
     args = parser.parse_args(argv)

@@ -9,7 +9,7 @@ Tasks:
             [ ] the inidx goes on first, then then fnid
             [ ] inidx is negative if we're in inverse mode
     [ ] on program termination, spits out existing dstack, as a temporary measure
-    [ ] read in function definitions into dictionary
+    [✓] read in function definitions into dictionary
     [ ] make 0 the default main
 [ ] implement literal-push
 [ ] implement some core functions
@@ -40,7 +40,7 @@ stack commands
     
 extra stack commands
 *   11      pop-n
-*   12      close-n
+*   12      clone-n
 *   13      move-to-bottom-n
     
 pipes
@@ -53,27 +53,27 @@ pipes
     29      sys.exit                    takes one int if avail, defaults to 0
     
 flowcontrol
-    31      call (unconditional)
-    32      recurse call (to self)
-    33      if-then
-    34      if-then-else
-    35      goto
+    30      call (unconditional)
+    31      recurse call (to self)
+    32      if-then
+    33      if-then-else
+    34      goto
 
 
 arithmetic
-    51      +
-    52      -
-    53      *
-    54      /
-    55      %
-    56      ^
-    57      log
+    50      +
+    51      -
+    52      *
+    53      /
+    54      %
+    55      ^
+    56      log
 
 binary arithmetic
-    61      !
-    62      &&
-    63      ||
-    64      wordwise xor
+    60      !
+    61      &&
+    62      ||
+    63      wordwise xor
 
 bitwise arithmetic
     71      bitwise not
