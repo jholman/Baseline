@@ -3,25 +3,102 @@
 
 stdlib = {}
 
+## TODO: almost the entire stdlib does insane shit if passed a negative number
 
-# TODO: omg, write a decorater to insert functions into the stdlib
 
+def standard(n):
+    def stdlibify_helper(f):
+        stdlib[n] = f
+        return f
+    return stdlibify_helper
+
+@standard(1)
 def stack_pop(blr, reg=1):
     blr.dstack.pop(reg)
 
-stdlib[1] = stack_pop
-
+@standard(2)
 def stack_clone(blr, reg=1):
     x = blr.dstack.pop(reg)
     blr.dstack.append(x, reg)
     blr.dstack.append(x, reg)
-stdlib[2] = stack_clone
 
+@standard(3)
 def stack_movetobottom(blr, reg=1):
     x = blr.dstack.pop(reg)
     blr.dstack.append(x, 1-reg)
-stdlib[3] = stack_movetobottom
 
+@standard(5)
+def stack_split(blr, reg=1):
+    blr.dstack.split(blr.dstack.pop(reg), reg)
+
+#@standard(6)
+#def stack_split_rev(blr, reg=1):
+#    blr.dstack.split(blr.dstack.pop(reg), reg, True)
+
+@standard(7)
+def stack_merge(blr, reg=1):
+    blr.dstack.merge(reg)
+
+@standard(11)
+def stack_pop_n(blr, reg=1):
+    for i in xrange(blr.dstack.pop(reg)): 
+        blr.dstack.pop(reg)
+
+@standard(12)
+def stack_clone_n(blr, reg=1):
+    l = []
+    for i in xrange(blr.dstack.pop(reg)):
+        l.append(blr.dstack.pop(reg))
+    blr.dstack.extend(l, reg)
+    blr.dstack.extend(l, reg)
+
+@standard(13)
+def stack_movetobottom_n(blr, reg=1):
+    l = []
+    for i in xrange(blr.dstack.pop(reg)):
+        l.append(blr.dstack.pop(reg))
+    blr.dstack.extend(l, 1-reg)
+
+
+
+@standard(50)
+def stack_plus(blr, reg=1):
+    blr.dstack.append(blr.dstack.pop(reg) + blr.dstack.pop(reg), reg)
+
+@standard(51)
+def stack_minus(blr, reg=1):
+    x = blr.dstack.pop(reg)
+    blr.dstack.append(blr.dstack.pop(reg) - x)
+
+@standard(52)
+def stack_times(blr, reg=1):
+    blr.dstack.append(blr.dstack.pop(reg) * blr.dstack.pop(reg), reg)
+
+@standard(53)
+def stack_div(blr, reg=1):
+    x = blr.dstack.pop(reg)
+    blr.dstack.append(blr.dstack.pop(reg) / x)
+
+@standard(54)
+def stack_div(blr, reg=1):
+    x = blr.dstack.pop(reg)
+    blr.dstack.append(blr.dstack.pop(reg) % x)
+
+@standard(55)
+def stack_div(blr, reg=1):
+    x = blr.dstack.pop(reg)
+    blr.dstack.append(blr.dstack.pop(reg) ** x)
+
+@standard(56)
+def stack_div(blr, reg=1):
+    from math import log
+    x = blr.dstack.pop(reg)
+    blr.dstack.append(log(blr.dstack.pop(reg), x))
+
+
+
+
+@standard(21)
 def pipes_produce(blr, reg=1):
     fd = blr.dstack.pop(reg)
     n = blr.dstack.pop(reg)
@@ -37,5 +114,3 @@ def pipes_produce(blr, reg=1):
         blr.dstack.append(n, reg)
     else:
         blr.dstack.append(reg)
-
-stdlib[21] = pipes_produce

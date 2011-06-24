@@ -74,6 +74,13 @@ class dstack(object):
             return
         return self.stack[-1].pop(end)
 
+    def pop_n(self, n, end=1):
+        if len(self.stack) is 0:
+            # should log ERROR, stack should never be empty
+            return
+        return [self.stack[-1].pop(end) for i in xrange(n)]
+
+
 
 
 class deque(object):
