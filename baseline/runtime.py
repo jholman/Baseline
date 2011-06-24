@@ -4,7 +4,6 @@ from . import stdlib
 
 
 def _reg_merge(x, y):
-    #return y
     assert x in [0,1] and y in [0,1]
     return 1 if x==y else 0
 

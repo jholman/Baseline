@@ -9,7 +9,6 @@ stdlib = {}
 def standard(n):
     def stdlibify_helper(f):
         stdlib[n] = f
-        return f
     return stdlibify_helper
 
 @standard(1)
@@ -60,40 +59,12 @@ def stack_movetobottom_n(blr, reg=1):
     blr.dstack.extend(l, 1-reg)
 
 
+def make_n_ary_fn(fid, n, fn):
+    def f(blr, reg=1):
+        args = blr.dstack.pop_n(n, reg)
+        blr.dstack.append(fn, *args)
+    stdlib[fid] = f
 
-@standard(50)
-def stack_plus(blr, reg=1):
-    blr.dstack.append(blr.dstack.pop(reg) + blr.dstack.pop(reg), reg)
-
-@standard(51)
-def stack_minus(blr, reg=1):
-    x = blr.dstack.pop(reg)
-    blr.dstack.append(blr.dstack.pop(reg) - x)
-
-@standard(52)
-def stack_times(blr, reg=1):
-    blr.dstack.append(blr.dstack.pop(reg) * blr.dstack.pop(reg), reg)
-
-@standard(53)
-def stack_div(blr, reg=1):
-    x = blr.dstack.pop(reg)
-    blr.dstack.append(blr.dstack.pop(reg) / x)
-
-@standard(54)
-def stack_div(blr, reg=1):
-    x = blr.dstack.pop(reg)
-    blr.dstack.append(blr.dstack.pop(reg) % x)
-
-@standard(55)
-def stack_div(blr, reg=1):
-    x = blr.dstack.pop(reg)
-    blr.dstack.append(blr.dstack.pop(reg) ** x)
-
-@standard(56)
-def stack_div(blr, reg=1):
-    from math import log
-    x = blr.dstack.pop(reg)
-    blr.dstack.append(log(blr.dstack.pop(reg), x))
 
 
 
@@ -114,3 +85,45 @@ def pipes_produce(blr, reg=1):
         blr.dstack.append(n, reg)
     else:
         blr.dstack.append(reg)
+
+
+
+import operator, math
+for fid, n, fn in [ [ 50, 2, operator.add],
+                    [ 51, 2, operator.sub],
+                    [ 52, 2, operator.mul],
+                    [ 53, 2, operator.floordiv],
+                    [ 54, 2, operator.mod],
+                    [ 55, 2, operator.pow],
+                    [ 56, 2, math.log],
+                    [ 60, 1, operator.not_],
+                    [ 61, 2, operator.iand],
+                    [ 62, 2, operator.ior],
+                    [ 63, 2, operator.ixor],
+                    #[ 70, 1, lambda x: ~x],
+                    [ 71, 2, operator.and_],
+                    [ 72, 2, operator.or_],
+                    [ 73, 2, operator.xor],
+                    [ 74, 2, operator.lshift],
+                    [ 75, 2, operator.rshift],
+                    [ 80, 2, operator.lt],
+                    [ 81, 2, operator.le],
+                    [ 82, 2, operator.eq],
+                    [ 83, 2, operator.ge],
+                    [ 84, 2, operator.gt],
+                    [ 85, 2, operator.ne],
+                    ]:
+    make_n_ary_fn(fid, n, fn)
+
+
+
+
+
+
+# Is this sillines really called for?
+ll = locals()
+for l in dict(locals()):
+    if not l.startswith('__') and l not in ["stdlib","ll"]:
+        del ll[l]
+del ll
+

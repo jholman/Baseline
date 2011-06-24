@@ -21,13 +21,22 @@ Tasks:
 [✓] implement function calls from functions
 [✓] write decorator to make stdlib-writing easier
 [ ] flesh out the stdlib
+    [✓] stack (except reverse split)
+    [ ] reverse split
+    [✓] stack-plus
+    [ ] pipes
+    [ ] flow
+    [✓] arithmetic
+    [✓] binary
+    [✓] bitwise
+    [✓] comparisons
 
 
 Stuff I glossed over:
 * proper handling of 0-register, in a LOT of places
     * a day later, I think : maybe this is under control now?
 * unit-test development is way behind, now
-* pipes code is totally non-general, of course
+* pipes code is totally a stub, of course
 * my function nametable doesn't allow mixed baseline/python implementations, which was a goal
 
 
@@ -68,7 +77,6 @@ flowcontrol
     33      if-then-else
     34      goto
 
-
 arithmetic
     50      +
     51      -
@@ -85,12 +93,12 @@ binary arithmetic
     63      wordwise xor
 
 bitwise arithmetic
-    71      bitwise not
-    72      &
-    73      |
-    74      bitwise xor
-    75      <<
-    76      >>
+    70      bitwise not         for WHAT STANDARD WIDTH?!?
+    71      &
+    72      |
+    73      bitwise xor
+    74      <<
+    75      >>
 
 comparisons
     81      <
@@ -99,8 +107,5 @@ comparisons
     84      >=
     85      >
     86      !=
-
-
-
 
 
