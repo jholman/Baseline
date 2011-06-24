@@ -1,58 +1,44 @@
 Tasks:
-[✓] fundef tokenizer (rewrite existing one)
-[✓] fundef parser
-[✓] write super-retarded interpreter stub:
-    [✓] initialize all data zones
-        [ ] note: rstack format:
-            [✓] your return location is a pair: fn-id, instruction-index
-            [✓] these are pushed onto the rstack as two elements
-            [✓] the inidx goes on first, then then fnid
-            [✓] fn_id is negative if we're in inverse mode
-    [✓] on program termination, spits out existing dstack, as a temporary measure
-    [✓] read in function definitions into dictionary
-    [✓] make 0 the default main
-[✓] implement literal-push
-[ ] implement some core functions
-    [✓] pop, clone, move-to-bottom
-    [✓] split, merge
-    [✓] stdin-only variant of pipes_produce (needed for Hello World)
-    [ ] the arithmetic functions
-    [ ] flowcontrol: call, if-then, 
-[✓] implement function calls from functions
-[✓] write decorator to make stdlib-writing easier
-[ ] flesh out the stdlib
+[ ] finish the stdlib
     [✓] stack (except reverse split)
     [ ] reverse split
     [✓] stack-plus
     [ ] pipes
+        [✓] produce
+        [ ] consume
+        [ ] open file
+        [ ] and the rest
     [ ] flow
+        [✓] call
+        [ ] if-then
+        [ ] and the rest of it
     [✓] arithmetic
     [✓] binary
     [✓] bitwise
     [✓] comparisons
+[ ] catch up the unit testing
+[ ] write some better samples
+    [ ] 1-40 fizzbuzz ?
+    [ ] sieve of eratosthenes ?
+    [ ] hd ?
+[ ] documentation
+[ ] improve README
+[ ] packaging?
 
 
-Stuff I glossed over:
-* proper handling of 0-register, in a LOT of places
-    * a day later, I think : maybe this is under control now?
-* unit-test development is way behind, now
-* pipes code is totally a stub, of course
+
+Note:
 * my function nametable doesn't allow mixed baseline/python implementations, which was a goal
 
 
-
-
-
-
-
-What commands get what function-ids?
+Stdlib Catalog:
 
 stack commands
      1      pop
      2      clone
      3      move-to-bottom
      5      split
-*    6      split-reverse
+     6      split-reverse
      7      merge
      8      swap-with-rstack
     
@@ -93,7 +79,7 @@ binary arithmetic
     63      wordwise xor
 
 bitwise arithmetic
-    70      bitwise not         for WHAT STANDARD WIDTH?!?
+    70      bitwise not         for WHAT STANDARD WIDTH?!?  argh, leave out?
     71      &
     72      |
     73      bitwise xor
