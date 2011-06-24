@@ -59,15 +59,6 @@ def stack_movetobottom_n(blr, reg=1):
     blr.dstack.extend(l, 1-reg)
 
 
-def make_n_ary_fn(fid, n, fn):
-    def f(blr, reg=1):
-        args = blr.dstack.pop_n(n, reg)
-        blr.dstack.append(fn, *args)
-    stdlib[fid] = f
-
-
-
-
 
 @standard(21)
 def pipes_produce(blr, reg=1):
@@ -87,6 +78,21 @@ def pipes_produce(blr, reg=1):
         blr.dstack.append(reg)
 
 
+
+@standard(30)
+def flow_call(blr, reg=1):
+    fnid = blr.dstack.pop(reg)
+    if fnid is None:
+        return
+    if not reg:
+        fnid *= -1
+    blr.rstack.extend([0, fnid])
+
+def make_n_ary_fn(fid, n, fn):
+    def f(blr, reg=1):
+        args = blr.dstack.pop_n(n, reg)
+        blr.dstack.append(fn, *args)
+    stdlib[fid] = f
 
 import operator, math
 for fid, n, fn in [ [ 50, 2, operator.add],

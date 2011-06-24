@@ -7,5 +7,5 @@ Assumptions :
 
 ¹⁰⁰ ⁼ ⁽⁽⁷² ¹⁰¹ ¹⁰⁸ ¹⁰⁸ ¹¹¹ ⁴⁴ ³² ¹¹⁹ ¹¹¹ ¹¹⁴ ¹⁰⁸ ¹⁰⁰ ³³ ¹⁰⁾⁾    put string in top stack
 #¹⁰¹ ⁼ ¹⁰⁰ ³ ₍₂₎ ₂₁                                              move bytecount to end, push fd=2 to bottom, print from bottom
- ¹⁰¹ ⁼ ₁₀₀ ³ ⁽²⁾ ²¹                                              move bytecount to end, push fd=2 to bottom, print from bottom
-⁰   ⁼ ¹⁰¹ ¹                                                     print"helloworld", pop
+ ¹⁰¹ ⁼ ₁₀₀ ₃ ⁽²⁾ ²¹                                              move bytecount to end, push fd=2 to bottom, print from bottom
+⁰   ⁼ ⁽¹⁰¹⁾³⁰ ¹                                                     print"helloworld", pop
