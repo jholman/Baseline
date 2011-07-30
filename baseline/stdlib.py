@@ -90,8 +90,8 @@ def flow_call(blr, reg=1):
 
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
-        args = blr.dstack.pop_n(n, reg)
-        blr.dstack.append(fn, *args)
+        args = reversed(blr.dstack.pop_n(n, reg))
+        blr.dstack.append(fn (*args))
     stdlib[fid] = f
 
 import operator, math

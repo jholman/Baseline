@@ -77,12 +77,14 @@ class BaselineRuntime(object):
                 self.__func_pop()
             else:
                 if self.debuglevel > 5: print "QUIT"
-                sys.exit(0)
+                #sys.exit(0)
+                return False
 
-        self.dump_state()       # TODO: delete this line
+        return True
+        #self.dump_state()       # TODO: delete this line
 
     def run(self):
-        while True:
-            self.FDE()
+        while self.FDE():
+            pass
 
 
