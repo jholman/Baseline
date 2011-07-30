@@ -1,7 +1,7 @@
 # -*- coding=utf-8 -*-
 
-
-from baseline import transforms
+from baseline.transforms import parse_fundef as parse
+from baseline.transforms import classify_token, richtoken, tokenize_line
 from pytest import raises
 from pprint import pprint
 
@@ -18,17 +18,15 @@ class TestLexing():
         for typ in data:
             for datum in data[typ]:
                 print "testing %s is a %s" % (datum, typ)
-                assert transforms.classify_token(datum)[0] == typ
+                assert classify_token(datum)[0] == typ
 
     def test_classify_token_value(self):
-        assert transforms.classify_token(u'¹⁰⁰')[2] == 100
+        assert classify_token(u'¹⁰⁰')[2] == 100
         # TODO: more here?
 
     def test_basic_tokenize(self):
-        from baseline.transforms import richtoken
-
         line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸₍₍₄₅₎₎⁷⁸66₄₅ ₄₍₅₎'
-        tokens = transforms.tokenize_line(line)
+        tokens = tokenize_line(line)
         pprint(tokens)
         assert tokens[0] == richtoken('number', 1, 100, u'¹⁰⁰', (0,))
         assert tokens[8] == richtoken('number', 0, 45, u'₄₅', (13,))
@@ -39,7 +37,6 @@ class TestLexing():
 
 class TestParsing():
     def test_well_formedness(self):
-        parse = transforms.parse_fundef
 
         assert parse("foo bar baz 22") == None      # line with no non-comment tokens
 
@@ -54,13 +51,13 @@ class TestParsing():
 
     def test_parse_fncalls(self):
         line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸66₄₅ ₄'
-        fnid, fnbody = transforms.parse_fundef(line)
+        fnid, fnbody = parse(line)
         assert len(fnbody) == 4
         assert [t.reg for t in fnbody] == [1, 1, 0, 0]
 
     def test_parse_literals(self):
         line = u'¹⁰⁰ ⁼ ⁷⁸₍₍₄₅ ₅₄₎₎₄₍₅₎⁷⁸⁽⁽¹⁰ ¹¹⁾⁾'
-        fnid, fnbody = transforms.parse_fundef(line)
+        fnid, fnbody = parse(line)
         assert len(fnbody) == 10
         assert [t.reg for t in fnbody] == [1, 0, 0, 0, 0, 0, 1, 1, 1, 1]
         assert [t.val for t in fnbody if t.typ == 'literal'] == [45, 54, 2, 5, 10, 11, 2]
