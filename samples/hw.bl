@@ -1,11 +1,6 @@
 # -*- coding=utf-8 -*-
 
-Assumptions :
- word 1 = { pop-top }
- word 3 = { x = pop-top ; push-bottom(x) }
- word 21 = { fd = pop-top ; num = pop-top ; pop top num bytes from top, attempting to write them to fd ; push-top(number bytes written) }
 
-¹⁰⁰ ⁼ ⁽⁽⁷² ¹⁰¹ ¹⁰⁸ ¹⁰⁸ ¹¹¹ ⁴⁴ ³² ¹¹⁹ ¹¹¹ ¹¹⁴ ¹⁰⁸ ¹⁰⁰ ³³ ¹⁰⁾⁾    put string in top stack
-#¹⁰¹ ⁼ ¹⁰⁰ ³ ₍₂₎ ₂₁                                              move bytecount to end, push fd=2 to bottom, print from bottom
- ¹⁰¹ ⁼ ₁₀₀ ₃ ⁽²⁾ ²¹                                              move bytecount to end, push fd=2 to bottom, print from bottom
-⁰   ⁼ ⁽¹⁰¹⁾³⁰ ¹                                                     print"helloworld", pop
+¹⁰⁰ ⁼ ⁽⁽⁷² ¹⁰¹ ¹⁰⁸ ¹⁰⁸ ¹¹¹ ⁴⁴ ³² ¹¹⁹ ¹¹¹ ¹¹⁴ ¹⁰⁸ ¹⁰⁰ ³³ ¹⁰⁾⁾    define string literal
+¹⁰¹ ⁼ ₁₀₀ ₃ ⁽¹⁾ ²¹                                              bottom-push literal, move len to top, push fd=1 (stdout), produce
+⁰   ⁼ ⁽¹⁰¹⁾ ³⁰ ¹                                                push name of HW function, eval that name, pop the returnval

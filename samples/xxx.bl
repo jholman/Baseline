@@ -1,4 +1,3 @@
 # -*- coding=utf-8 -*-
 
-
-⁰ ⁼ ⁽⁽¹⁰ ¹²⁰ ¹²⁰ ¹²⁰⁾⁾ ⁽¹⁾ ²¹ ¹     String-push 'xxx', push 1 (fd of stdin), stream-produce, pop the return-val.
+⁰ ⁼ ⁽⁽¹⁰ ¹²⁰ ¹²⁰ ¹²⁰⁾⁾ ⁽¹⁾ ²¹ ¹     String-push '\nxxx', push 1 (fd of stdin), stream-produce, pop the return-val.
