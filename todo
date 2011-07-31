@@ -46,6 +46,7 @@ extra stack commands
     11      pop-n
     12      clone-n
     13      move-to-bottom-n
+    19      dump entire state to stdout for debugging
     
 pipes
     21      produce

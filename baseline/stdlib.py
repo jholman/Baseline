@@ -58,6 +58,10 @@ def stack_movetobottom_n(blr, reg=1):
         l.append(blr.dstack.pop(reg))
     blr.dstack.extend(l, 1-reg)
 
+@standard(19)
+def stack_debugdump(blr, reg=1):
+    blr.dump_state(9)
+
 
 
 @standard(21)
