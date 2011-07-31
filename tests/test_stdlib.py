@@ -18,67 +18,54 @@ class TestStdlib():
         env.run()
         return capture.getvalue()
 
+    def test_helloworld(self):
+        prog = '''
+¹⁰⁰ ⁼ ⁽⁽⁷² ¹⁰¹ ¹⁰⁸ ¹⁰⁸ ¹¹¹ ⁴⁴ ³² ¹¹⁹ ¹¹¹ ¹¹⁴ ¹⁰⁸ ¹⁰⁰ ³³ ¹⁰⁾⁾    define string literal
+¹⁰¹ ⁼ ₁₀₀ ₃ ⁽¹⁾ ²¹                                              bottom-push literal, move len to top, push fd=1 (stdout), produce
+⁰   ⁼ ⁽¹⁰¹⁾ ³⁰ ¹                                                push name of HW function, eval that name, pop the returnval
+'''
+        assert self._runprogram(prog.strip().split('\n')) == "Hello, world!\n"
 
-    def test_arith(self):
-        prog = ["¹⁰⁰ ⁼ ⁽⁵ ⁷ ⁵⁾ ⁵⁰ ⁵² ⁽³⁾ ⁵³ ⁽⁹⁾ ⁵¹ ⁽²⁾ ⁵⁵",              # square(((5+7) * 5 / 3 ) - 9)   should equal 121
-                "⁰ ⁼ ¹⁰⁰ ⁽¹ ¹⁾ ²¹",                                     # do 100, push 1 (len) and 2 (fd), produce
+
+    def test_arith(self): 
+        '''Test stdlib functions 50-57 (the basic math operators)'''
+        prog = ["¹⁰⁰ ⁼ ⁽⁵ ⁷ ⁵⁾ ⁵⁰ ⁵² ⁽³⁾ ⁵³ ⁽⁹⁾ ⁵¹ ⁽²⁾ ⁵⁵",             # square(((5+7) * 5 / 3 ) - 9)   should equal 121
+                "⁰ ⁼ ₁₀₀ ⁽⁹⁹⁹ ¹⁾ ²¹",                                   # do #100, dump entire stack to stdout
+                ]                                                       # tests 50-53, 55
+        assert self._runprogram(prog) == 'y'
+        prog = ["¹⁰⁰ ⁼ ⁽⁶²³³ ¹⁹¹⁾ ⁵⁴ ⁽¹⁵¹⁵⁹ ¹¹ ¹⁰⁾ ⁵⁷ ⁵⁶",              # 6233 % 101 ; log₁˳₁15159
+                "⁰ ⁼ ₁₀₀ ¹⁹ ⁽⁹⁹⁹ ¹⁾ ²¹",                                # do #100, dump entire stack to stdout
+                ]                                                       # tests 54, 56, 57
+        assert self._runprogram(prog) == 'ye'
+
+    def test_logic(self):
+        '''Test stdlib functions 60-63 (the wordwise logic functions)'''
+        prog = ["¹⁰⁰ ⁼ ⁽⁰⁾ ⁶⁰ ⁽⁶⁾ ⁶⁰ ⁽⁶⁶⁰⁾ ⁶⁰",
+                "⁰ ⁼ ₁₀₀ ¹⁹ ⁽⁹⁹⁹ ¹⁾ ²¹",                                # do #100, dump entire stack to stdout
                 ]
-        output = self._runprogram(prog)
-        assert output == 'y'
+        truefalsefalse = self._runprogram(prog)
+        assert truefalsefalse[0] != '\x00'
+        assert truefalsefalse[1:] == '\x00\x00'
+        prog = ["¹⁰⁰ ⁼ ⁽⁰ ⁰⁾ ⁶¹ ⁽⁰ ¹⁾ ⁶¹ ⁽¹ ⁰⁾ ⁶¹ ⁽¹ ¹⁾ ⁶¹ ⁶⁰",         # test wordwise and (61)
+                "¹⁰¹ ⁼ ⁽⁰ ⁰⁾ ⁶² ⁽⁰ ¹⁾ ⁶² ⁶⁰ ⁽¹ ⁰⁾ ⁶² ⁶⁰ ⁽¹ ¹⁾ ⁶² ⁶⁰",   # test wordwise or  (62)
+                "¹⁰² ⁼ ⁽⁰ ⁰⁾ ⁶³ ⁽⁰ ¹⁾ ⁶³ ⁶⁰ ⁽¹ ⁰⁾ ⁶³ ⁶⁰ ⁽¹ ¹⁾ ⁶³",      # test wordwise xor (63)
+                "⁰ ⁼ ₁₀₀ ₁₀₁ ₁₀₂ ¹⁹ ⁽⁹⁹⁹ ¹⁾ ²¹",                        # do #100 #101 #102, dump entire stack to stdout
+                ]
+        assert self._runprogram(prog) == '\x00' * 4 * 3
 
-#
-#class TestLexing():
-#    def test_classify_token_type(self):
-#        data = {"number" : [u'¹⁰⁰', u'₄₅'],
-#                "paren" : [u'₍', u'₎', u'⁽', u'⁾'],
-#                "operator" : u"₊₋₌˱˲˰˯⁺⁻⁼˂˃˄˅",
-#                }
-#        for typ in data:
-#            for datum in data[typ]:
-#                print "testing %s is a %s" % (datum, typ)
-#                assert classify_token(datum)[0] == typ
-#
-#    def test_classify_token_value(self):
-#        assert classify_token(u'¹⁰⁰')[2] == 100
-#        # TODO: more here?
-#
-#    def test_basic_tokenize(self):
-#        line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸₍₍₄₅₎₎⁷⁸66₄₅ ₄₍₅₎'
-#        tokens = tokenize_line(line)
-#        pprint(tokens)
-#        assert tokens[0] == richtoken('number', 1, 100, u'¹⁰⁰', (0,))
-#        assert tokens[8] == richtoken('number', 0, 45, u'₄₅', (13,))
-#        registers = [t.reg for t in tokens if t.typ != 'comment']
-#        assert registers == [1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]
-#        types = [t.typ for t in tokens if t.typ != 'comment']
-#        assert types == ['number','operator','number','number','paren','number','paren','number','number','number','paren','number','paren']
-#
-#class TestParsing():
-#    def test_well_formedness(self):
-#
-#        assert parse("foo bar baz 22") == None      # line with no non-comment tokens
-#
-#        with raises(ValueError):
-#            parse(u' ⁼ ⁷⁸ ⁷⁸₄₅⁷⁸')                  # line does not start with number
-#        with raises(ValueError):
-#            parse(u'¹⁰⁰ ⁼ dude')                    # line with not enough tokens
-#        with raises(ValueError):
-#            parse(u'⁷⁸ ⁷⁸₄₅⁷⁸')                     # line does not have = as second token
-#        with raises(Exception):
-#            parse(u'¹⁰⁰ ⁼ ⁷⁸⁺⁷⁸')                   # wtf is that "+" doing there?
-#
-#    def test_parse_fncalls(self):
-#        line = u'¹⁰⁰ ⁼ ⁷⁸ ⁷⁸66₄₅ ₄'
-#        fnid, fnbody = parse(line)
-#        assert len(fnbody) == 4
-#        assert [t.reg for t in fnbody] == [1, 1, 0, 0]
-#
-#    def test_parse_literals(self):
-#        line = u'¹⁰⁰ ⁼ ⁷⁸₍₍₄₅ ₅₄₎₎₄₍₅₎⁷⁸⁽⁽¹⁰ ¹¹⁾⁾'
-#        fnid, fnbody = parse(line)
-#        assert len(fnbody) == 10
-#        assert [t.reg for t in fnbody] == [1, 0, 0, 0, 0, 0, 1, 1, 1, 1]
-#        assert [t.val for t in fnbody if t.typ == 'literal'] == [45, 54, 2, 5, 10, 11, 2]
-#
-#
-#
+    def test_bitwise(self):
+        '''Test stdlib functions 71-75 (the bitwise logic functions)'''
+        # 0b010101 == 21, 0b101010 == 42, 0b000111 == 7, 0b111000 == 56
+        prog = ["¹⁰⁰ ⁼ ⁽²¹ ⁷⁾ ⁷¹ ² ⁽⁴²⁾ ⁷²",                            # 010101 & 000111, clone, | 101010  : test 71 and 72
+                "¹⁰¹ ⁼ ⁽²¹ ⁷⁾ ⁷³",                                      # 010101 ^ 000111
+                "¹⁰² ⁼ ² ⁽³⁾ ⁷⁴ ⁽⁴² ⁴⁾ ⁷⁵",                             # clone the 18, << 3, 42 >> 4
+                "⁰ ⁼ ₁₀₀ ₁₀₁ ₁₀₂ ¹⁹ ⁽⁹⁹⁹ ¹⁾ ²¹",                        # do #100 #101 #102, dump entire stack to stdout
+                ]
+        assert self._runprogram(prog) == '\x05\x2f\x12\x90\x02'
+
+
+
+#₀₁₂₃₄₅₆₇₈₉₊₋₌₍₎˱˲˰˯˳
+#⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼⁽⁾˂˃˄˅˚
+
+
