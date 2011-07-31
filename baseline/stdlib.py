@@ -64,18 +64,20 @@ def stack_movetobottom_n(blr, reg=1):
 def pipes_produce(blr, reg=1):
     fd = blr.dstack.pop(reg)
     n = blr.dstack.pop(reg)
-    data = []
-    for i in range(n):
-        data.append(chr(blr.dstack.pop(reg)))
-    data = filter(lambda x:x is not None, data)
+
+    data = filter(lambda x:x is not None, blr.dstack.pop_n(n, reg))
+    data = map(lambda num : chr(int(num % 256)), data)
+
     if fd in blr.pipes:
-        # TODO: should probably check for closed-ness here?
-        blr.pipes[fd].write(''.join(data))
-        # TODO: should do something to ensure writing worked?  oh well, just go for it.
-        blr.pipes[fd].flush()
-        blr.dstack.append(n, reg)
+        try:
+            blr.pipes[fd].write(''.join(data))  # TODO: is there some way to detect partial writes?  what about network sockets?
+            blr.pipes[fd].flush()
+        except:
+            blr.dstack.append(0, reg)           # detects a variety of failures, including closed file
+        else:
+            blr.dstack.append(n, reg)
     else:
-        blr.dstack.append(reg)
+        blr.dstack.append(0, reg)
 
 
 
@@ -102,6 +104,7 @@ for fid, n, fn in [ [ 50, 2, operator.add],
                     [ 54, 2, operator.mod],
                     [ 55, 2, operator.pow],
                     [ 56, 2, math.log],
+                    [ 57, 2, operator.truediv],
                     [ 60, 1, operator.not_],
                     [ 61, 2, operator.iand],
                     [ 62, 2, operator.ior],

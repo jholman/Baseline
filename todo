@@ -67,10 +67,11 @@ arithmetic
     50      +
     51      -
     52      *
-    53      /
+    53      /       (floordiv)
     54      %
     55      ^
     56      log
+    57      //      (truediv)
 
 binary arithmetic
     60      !
