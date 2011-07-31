@@ -16,7 +16,7 @@ class richtoken(object):
     def __init__(self, typ, reg, val, t, loc=(0,)):
         self.typ, self.reg, self.val, self.tok, self.loc = typ, reg, val, t, loc
     def __repr__(self):
-        return "richtoken(%s, %s, %s, %s, %s)" % tuple(map(repr,[self.typ, self.reg, self.val, self.tok, self.loc]))
+        return "richtoken(%s, %s, %s, %s, %s)" % tuple(map(repr, [self.typ, self.reg, self.val, self.tok, self.loc]))
     def __eq__(self, other):
         return issubclass(other.__class__, self.__class__) and self.__dict__ == other.__dict__
 
@@ -48,7 +48,7 @@ def classify_token(string):
 
     value = ''.join(conversion(l) for l in string)
     if tokentype == "number":
-        value = int(value,0)
+        value = int(value, 0)
 
     return (tokentype, register, value)
 
@@ -59,7 +59,7 @@ def tokenize_line(line):
     pattern = "[%s]+|[%s]+|[%s]|" % (__subdigits, __superdigits, operators)
     pattern += "|".join("%s+"%p for p in parens)
 
-    tokens = filter(lambda s: len(s)>0,re.split("(%s)" % pattern,line))
+    tokens = filter(lambda s: len(s)>0, re.split("(%s)" % pattern, line))
 
     newtokens = []
     offset = 0

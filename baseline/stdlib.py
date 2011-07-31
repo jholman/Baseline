@@ -99,7 +99,7 @@ def flow_call(blr, reg=1):
 def flow_call_if(blr, reg=1):
     flag = blr.dstack.pop(reg)
     if flag:
-        stdlib[30](blr,reg)
+        stdlib[30](blr, reg)
     else:
         blr.dstack.pop(reg)
 
@@ -111,7 +111,7 @@ def flow_call_ifelse(blr, reg=1):
         blr.dstack.append(iftrue, reg)
     else:
         blr.dstack.append(iffalse, reg)
-    stdlib[30](blr,reg)
+    stdlib[30](blr, reg)
 
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
@@ -155,7 +155,7 @@ for fid, n, fn in [ [ 50, 2, operator.add],
 # Is this sillines really called for?
 ll = locals()
 for l in dict(locals()):
-    if not l.startswith('__') and l not in ["stdlib","ll"]:
+    if not l.startswith('__') and l not in ["stdlib", "ll"]:
         del ll[l]
 del ll
 

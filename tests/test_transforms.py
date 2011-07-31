@@ -33,7 +33,9 @@ class TestLexing():
         registers = [t.reg for t in tokens if t.typ != 'comment']
         assert registers == [1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0]
         types = [t.typ for t in tokens if t.typ != 'comment']
-        assert types == ['number','operator','number','number','paren','number','paren','number','number','number','paren','number','paren']
+        assert types == ['number', 'operator', 'number', 'number', 'paren', 
+                        'number', 'paren', 'number', 'number', 'number', 
+                        'paren', 'number', 'paren']
 
 class TestParsing():
     def test_well_formedness(self):

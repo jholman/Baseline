@@ -7,7 +7,7 @@ class dstack(object):
         self.stack = [deque(*iterable)]
 
     def __str__(self):
-        return '[' + ',\n'.join(map(str,reversed(self.stack))) + ']'
+        return '[' + ',\n'.join(map(str, reversed(self.stack))) + ']'
 
     def __iter__(self):
         return (x for x in self.stack)
@@ -103,11 +103,11 @@ class deque(object):
         # Constructor.  Optionally takes EITHER:
         #       two keyword argments, 'top' and 'bottom', pointing to elts, or
         #       0 or more arguments containining initialization elements
-        self.end = [None,None]
+        self.end = [None, None]
         if kwargs.keys() == []:
             for i in argv:
                 self.append(i)
-        elif sorted(kwargs.keys()) == ['bot','top']:
+        elif sorted(kwargs.keys()) == ['bot', 'top']:
             self.end[0] = kwargs['bot']
             self.end[1] = kwargs['top']
             self.end[0].adj[0] = None
@@ -117,7 +117,7 @@ class deque(object):
 
     def append(self, item, end=1):
         # Push.  Constant-time performance.
-        if end not in [0,1]:
+        if end not in [0, 1]:
             raise IndexError("%s is not a valid end-index for a deque (valid: 0 or 1)" % end)
         if self.end == [None, None]:
             self.end[0] = self.end[1] = self.elt(item)
@@ -139,7 +139,7 @@ class deque(object):
         else:
             ans = self.end[end].value
         if self.end[end].adj[1-end] is None:
-            self.end = [None,None]
+            self.end = [None, None]
         else:
             self.end[end] = self.end[end].adj[1-end]
             self.end[end].adj[end].adj[1-end] = None
@@ -156,11 +156,11 @@ class deque(object):
         return self.__iter__(0)
 
     def __str__(self):
-        return '<' + ', '.join(map(repr,self.__iter__(1))) + '>'
-        #return '<' + ', '.join(map(repr,reversed(self.__iter__(0)))) + '>'
+        return '<' + ', '.join(map(repr, self.__iter__(1))) + '>'
+        #return '<' + ', '.join(map(repr, reversed(self.__iter__(0)))) + '>'
 
     def __repr__(self):
-        return 'deque(' + ', '.join(map(lambda x: repr(x.value),self.__iter__())) + ')'
+        return 'deque(' + ', '.join(map(lambda x: repr(x.value), self.__iter__())) + ')'
 
     def __len__(self):
         ans = 0
