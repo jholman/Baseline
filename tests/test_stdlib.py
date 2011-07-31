@@ -27,6 +27,27 @@ class TestStdlib():
         assert self._runprogram(prog.strip().split('\n')) == "Hello, world!\n"
 
 
+    def test_flowcontrol(self):
+        '''Test stdlib functions 30-33 (flow control)'''
+        prog = ["¹⁰⁰ ⁼ ⁽⁽¹¹⁵ ¹⁰¹ ¹²¹⁾⁾ ⁽¹⁾ ²¹ ¹",                       # print "yes" to stdout
+                "¹⁰¹ ⁼ ⁽⁽¹¹¹ ¹¹⁰⁾⁾ ⁽¹⁾ ²¹ ¹",                           # print "no" to stdout
+                "⁰ ⁼ ⁽¹⁰⁰⁾ ³⁰",                                         # test dynamic function call
+                "",
+                ]
+        assert self._runprogram(prog) == "yes"
+
+        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁾ ³¹"                                      # test if(True)
+        assert self._runprogram(prog) == "yes"
+        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ⁰⁾ ³¹"                                      # test if(False)
+        assert self._runprogram(prog) == ""
+
+        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁰¹ ¹⁾ ³²"                                      # test if(True)
+        assert self._runprogram(prog) == "yes"
+        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁰¹ ⁰⁾ ³²"                                      # test if(False)
+        assert self._runprogram(prog) == "no"
+
+
+
     def test_arith(self): 
         '''Test stdlib functions 50-57 (the basic math operators)'''
         prog = ["¹⁰⁰ ⁼ ⁽⁵ ⁷ ⁵⁾ ⁵⁰ ⁵² ⁽³⁾ ⁵³ ⁽⁹⁾ ⁵¹ ⁽²⁾ ⁵⁵",             # square(((5+7) * 5 / 3 ) - 9)   should equal 121

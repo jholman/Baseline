@@ -4,6 +4,7 @@
 stdlib = {}
 
 ## TODO: almost the entire stdlib does insane shit if passed a negative number
+###             later observation: I think when I wrote this, I meant the stack_ parts?
 
 
 def standard(n):
@@ -93,6 +94,24 @@ def flow_call(blr, reg=1):
     if not reg:
         fnid *= -1
     blr.rstack.extend([0, fnid])
+
+@standard(31)
+def flow_call_if(blr, reg=1):
+    flag = blr.dstack.pop(reg)
+    if flag:
+        stdlib[30](blr,reg)
+    else:
+        blr.dstack.pop(reg)
+
+@standard(32)
+def flow_call_ifelse(blr, reg=1):
+    flag = blr.dstack.pop(reg)
+    iffalse, iftrue = blr.dstack.pop_n(2, reg)
+    if flag:
+        blr.dstack.append(iftrue, reg)
+    else:
+        blr.dstack.append(iffalse, reg)
+    stdlib[30](blr,reg)
 
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
