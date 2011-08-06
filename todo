@@ -1,30 +1,21 @@
 Tasks:
 [ ] finish the stdlib
-    [✓] stack (except reverse split)
-    [ ] reverse split
-    [✓] stack-plus
-    [ ] pipes
-        [✓] produce
-        [ ] consume
-        [ ] open file
-        [ ] and the rest
-    [ ] flow
-        [✓] call
-        [ ] if-then
-        [ ] and the rest of it
-    [✓] arithmetic
-    [✓] binary
-    [✓] bitwise
-    [✓] comparisons
 [ ] catch up the unit testing
+    [ ] unit-test entire stdlib
 [ ] write some better samples
     [ ] 1-40 fizzbuzz ?
     [ ] sieve of eratosthenes ?
-    [ ] hd ?
 [ ] documentation
 [ ] improve README
 [ ] packaging?
-
+[ ] additional data types
+    [ ] floating-point literals
+    [ ] maybe non-decimal literals?     ⁰ˣ⁴ᵇᶜ³ ₀ₓ₁ₐ₂    subscript is missing {bcdf} though...
+    [ ] maybe scientific-notation literals?         
+    [ ] convert I/O to UTF-8 (incl stop using chr())
+[ ] coding utilities
+    [ ] string converter
+    [ ] vim plugin for program entry
 
 
 Note:
@@ -38,9 +29,10 @@ stack commands
      2      clone
      3      move-to-bottom
      5      split
-     6      split-reverse
+[ ]  6      split-reverse
      7      merge
-     8      swap-with-rstack
+     8      merge-reverse ?
+[ ]  9      swap-with-rstack
     
 extra stack commands
     11      pop-n
@@ -50,19 +42,19 @@ extra stack commands
     
 pipes
     21      produce
-    22      consume
-    23      open file
-    24      open unix socket
-    25      open TCP socket
-    27      send UDP datagram
-    29      sys.exit                    takes one int if avail, defaults to 0
+[ ] 22      consume
+[ ] 23      open file
+[ ] 24      open unix socket
+[ ] 25      open TCP socket
+[ ] 27      send UDP datagram
+[ ] 29      sys.exit                    takes one int if avail, defaults to 0
     
 flowcontrol
     30      call (unconditional)
-    31      recurse call (to self)
-    32      if-then
-    33      if-then-else
-    34      goto
+    31      if-then
+    32      if-then-else
+[ ] 34      goto
+[ ] 35      recurse call (to self)
 
 arithmetic
     50      +
@@ -81,7 +73,7 @@ binary arithmetic
     63      wordwise xor
 
 bitwise arithmetic
-    70      bitwise not         for WHAT STANDARD WIDTH?!?  argh, leave out?
+[ ] 70      bitwise not         for WHAT STANDARD WIDTH?!?  argh, leave out?
     71      &
     72      |
     73      bitwise xor
@@ -94,6 +86,6 @@ comparisons
     83      ==
     84      >=
     85      >
-    86      !=
+[ ] 86      !=
 
 
