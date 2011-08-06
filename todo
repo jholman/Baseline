@@ -1,7 +1,11 @@
 Tasks:
 [ ] finish the stdlib
 [ ] catch up the unit testing
-    [ ] unit-test entire stdlib
+    [ ] unit-test entire stdlib via blackbox functional tests
+        [ ] stack manip
+            [ ] is move-to-bottom-n working?  tried to use it, it seemed fucked.  must test!
+        [ ] pipes
+        [ ] comparisons
 [ ] write some better samples
     [ ] 1-40 fizzbuzz ?
     [ ] sieve of eratosthenes ?
@@ -20,6 +24,8 @@ Tasks:
 
 Note:
 * my function nametable doesn't allow mixed baseline/python implementations, which was a goal
+* current CI command-line (after `shopt -s globstar`):
+    pywatch 'echo "\n\n\n\n\n\n\n\n\n\n\n";date ; py.test -v' **/*.py bin/*
 
 
 Stdlib Catalog:
@@ -29,9 +35,9 @@ stack commands
      2      clone
      3      move-to-bottom
      5      split
-[ ]  6      split-reverse
+[✓]  6      split-reverse
      7      merge
-     8      merge-reverse ?
+[ ]  8      merge-reverse ?
 [ ]  9      swap-with-rstack
     
 extra stack commands

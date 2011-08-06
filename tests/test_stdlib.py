@@ -26,9 +26,20 @@ class TestStdlib():
 '''
         assert self._runprogram(prog.strip().split('\n')) == "Hello, world!\n"
 
+    def test_stackcmds(self):
+        # TODO
+        pass
+
+    def test_stackcmds_extra(self):
+        # TODO
+        pass
+
+    def test_pipes(self):
+        # TODO
+        pass
 
     def test_flowcontrol(self):
-        '''Test stdlib functions 30-33 (flow control)'''
+        '''Test stdlib functions 30-35 (flow control)'''        # TODO: 34 and 35
         prog = ["¹⁰⁰ ⁼ ⁽⁽¹¹⁵ ¹⁰¹ ¹²¹⁾⁾ ⁽¹⁾ ²¹ ¹",                       # print "yes" to stdout
                 "¹⁰¹ ⁼ ⁽⁽¹¹¹ ¹¹⁰⁾⁾ ⁽¹⁾ ²¹ ¹",                           # print "no" to stdout
                 "⁰ ⁼ ⁽¹⁰⁰⁾ ³⁰",                                         # test dynamic function call
@@ -83,6 +94,11 @@ class TestStdlib():
                 "⁰ ⁼ ₁₀₀ ₁₀₁ ₁₀₂ ¹⁹ ⁽⁹⁹⁹ ¹⁾ ²¹",                        # do #100 #101 #102, dump entire stack to stdout
                 ]
         assert self._runprogram(prog) == '\x05\x2f\x12\x90\x02'
+
+
+    def test_comparisons(self):
+        # TODO
+        pass
 
 
 

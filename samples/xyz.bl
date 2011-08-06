@@ -1,0 +1,11 @@
+# -*- coding=utf-8 -*-
+
+Older simpler version
+String-push '\nzyx', push 1 (fd of stdin), stream-produce, pop the return-val.
+⁰ ⁼ ⁽⁽¹⁰ ¹²² ¹²¹ ¹²⁰⁾⁾ ⁽¹⁾ ²¹ ¹
+
+
+
+String-push 'xyz\n', split-reverse(10), move the string-size back to top, push 1 (fd of stdout), stream-produce, merge
+⁰ ⁼ ⁽⁽¹²⁰ ¹²¹ ¹²² ¹⁰⁾⁾ ⁽¹⁰⁾ ⁶ ₃ ⁽¹⁾ ²¹ 
+

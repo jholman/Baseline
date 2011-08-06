@@ -30,14 +30,13 @@ class dstack(object):
             self.stack.pop()
 
     def split(self, n=0, end=1, reverse=False):    # ('end' marks which end of the top deque)
-        if reverse:
-            raise NotImplementedError # should log ERROR, because it's not implemented!  # TODO: implement
+        # TODO: I didn't think very deeply about my implementation of the 'reverse' flag, so I suspect it's an inefficient mess
         if len(self.stack) is 0:
             return # should log ERROR, stack should never be empty
-        elif n == 0:            # just want a new empty deque
+        elif n == 0:                                # just want a new empty deque
             self.stack.append(deque())
             return
-        elif self.stack[-1].end == [None, None]:
+        elif self.stack[-1].end == [None, None]:    # nothing available to split
             self.stack.append(deque())
             return
         else:
@@ -51,13 +50,20 @@ class dstack(object):
                 ptr = ptr.adj[1-end]            # now ptr is out of the split-section
                 ptr.adj[end].adj[1-end] = None
                 if end:
-                    self.stack.append(deque(top=topdeque.end[end], bot=ptr.adj[end]))
+                    d = deque(top=topdeque.end[end], bot=ptr.adj[end])
                 else:
-                    self.stack.append(deque(top=ptr.adj[end], bot=topdeque.end[end]))
+                    d = deque(top=ptr.adj[end], bot=topdeque.end[end])
+                if reverse:
+                    d = deque(*(d.__iter__(0 if reverse else 1)))
+                self.stack.append(d)
                 ptr.adj[end] = None
                 self.stack[-2].end[end] = ptr
             else:
                 self.stack.insert(-1, deque())
+                if reverse:
+                    d = self.stack[-1]
+                    d = deque(*(d.__iter__(0 if reverse else 1)))
+                    self.stack[-1] = d
 
     def append(self, item, end=1):
         if len(self.stack) is 0:

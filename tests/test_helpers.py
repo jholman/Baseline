@@ -63,20 +63,24 @@ class TestDStack():
 
     def test_split_merge_simple(self):
         ds = dstack([1, 2, 3])
-        ds.split(1)
+        ds.split(1)                                     # split 1 off the top
         assert map(list, ds) == [[1, 2], [3]]
-        ds.merge()
-        ds.split(2)
+        ds.merge()                                      # merge it back onto the top
+        ds.split(2)                                     # split 2 off the top
         assert map(list, ds) == [[1], [2, 3]]
 
     def test_split_merge_end_0(self):
         ds = dstack([1, 2, 3])
-        ds.split(1, 0)
+        ds.split(1, 0)                                  # split 1 off the bottom
         assert map(list, ds) == [[2, 3], [1]]
-        ds.append(4)
-        ds.append(5, 0)
+        ds.append(4)                                    # put 4 on the top of top
+        ds.append(5, 0)                                 # put 5 on the bottom of top
         assert map(list, ds) == [[2, 3], [5, 1, 4]]
-        ds.merge(0)
+        ds.merge(0)                                     # slap it all back onto the bottom
+        assert map(list, ds) == [[5, 1, 4, 2, 3]]
+        ds.split(2, 0)                                  # take two off the bottom
+        assert map(list, ds) == [[4, 2, 3], [5, 1]]
+        ds.merge(0)                                     # slap it all back onto the bottom
         assert map(list, ds) == [[5, 1, 4, 2, 3]]
 
     def test_split_merge_degenerate(self):
@@ -92,6 +96,30 @@ class TestDStack():
         ds.split(2)
         assert map(list, ds) == [[], [1], [2, 3]]
 
+    def test_split_reverse(self):
+        ds = dstack([1, 2, 3, 4, 5])
+        ds.split(4, 1, True)                            # test Reverse split
+        assert map(list, ds) == [[1], [5, 4, 3, 2]]
+        ds.split(3, 1, True)                            # test Reverse split again
+        assert map(list, ds) == [[1], [5], [2, 3, 4]]
+        ds.split(2, 0, True)                            # test Reverse split off bottom
+        assert map(list, ds) == [[1], [5], [4], [3, 2]]
+        ds.split(3, 0, True)                            # test Reverse too-long split off bottom
+        assert map(list, ds) == [[1], [5], [4], [], [2, 3]]
+        ds.split(2, 1, True)                            # test Reverse exact-length split (off top)
+        assert map(list, ds) == [[1], [5], [4], [], [], [3, 2]]
+
+        ds = dstack([1, 2, 3, 4, 5])
+        ds.split(6, 1, True)                            # test Reverse too-long split off top
+        assert map(list, ds) == [[], [5, 4, 3, 2, 1]]
+        ds.merge()
+        ds.split(6, 1, True)                            # test Reverse too-long split off top
+        assert map(list, ds) == [[], [1, 2, 3, 4, 5]]
+        ds.merge()
+
+    def test_merge_reverse(self):
+        pass
+
     def test_pop(self):
         ds = dstack([1, 2, 3, 4, 5])
         x = ds.pop()
@@ -102,6 +130,4 @@ class TestDStack():
         x = ds.pop(0)
         assert x == 3
         assert map(list, ds) == [[4, 1, 2]]
-
-
 

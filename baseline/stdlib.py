@@ -31,9 +31,9 @@ def stack_movetobottom(blr, reg=1):
 def stack_split(blr, reg=1):
     blr.dstack.split(blr.dstack.pop(reg), reg)
 
-#@standard(6)
-#def stack_split_rev(blr, reg=1):
-#    blr.dstack.split(blr.dstack.pop(reg), reg, True)
+@standard(6)
+def stack_split_rev(blr, reg=1):
+    blr.dstack.split(blr.dstack.pop(reg), reg, True)
 
 @standard(7)
 def stack_merge(blr, reg=1):
@@ -48,7 +48,7 @@ def stack_pop_n(blr, reg=1):
 def stack_clone_n(blr, reg=1):
     l = []
     for i in xrange(blr.dstack.pop(reg)):
-        l.append(blr.dstack.pop(reg))
+        l.append(blr.dstack.pop(reg), reg)
     blr.dstack.extend(l, reg)
     blr.dstack.extend(l, reg)
 
