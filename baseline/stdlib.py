@@ -48,9 +48,9 @@ def stack_pop_n(blr, reg=1):
 def stack_clone_n(blr, reg=1):
     l = []
     for i in xrange(blr.dstack.pop(reg)):
-        l.append(blr.dstack.pop(reg), reg)
-    blr.dstack.extend(l, reg)
-    blr.dstack.extend(l, reg)
+        l.append(blr.dstack.pop(reg))
+    blr.dstack.extend(reversed(l), reg)
+    blr.dstack.extend(reversed(l), reg)
 
 @standard(13)
 def stack_movetobottom_n(blr, reg=1):
@@ -83,7 +83,6 @@ def pipes_produce(blr, reg=1):
             blr.dstack.append(n, reg)
     else:
         blr.dstack.append(0, reg)
-
 
 
 @standard(30)
