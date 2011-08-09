@@ -115,7 +115,10 @@ def flow_call_ifelse(blr, reg=1):
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
         args = reversed(blr.dstack.pop_n(n, reg))
-        blr.dstack.append(fn (*args), reg)
+        ans = fn (*args)
+        if ans is True: ans = 1
+        if ans is False: ans = 0
+        blr.dstack.append(ans, reg)
     stdlib[fid] = f
 
 import operator, math
