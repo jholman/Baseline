@@ -1,6 +1,8 @@
 
 # all functions take a Baseline Runtime as their sole argument
 
+import sys
+
 stdlib = {}
 
 ## TODO: almost the entire stdlib does insane shit if passed a negative number
@@ -112,6 +114,11 @@ def flow_call_ifelse(blr, reg=1):
         blr.dstack.append(iffalse, reg)
     stdlib[30](blr, reg)
 
+@standard(39)
+def flow_exit(blr, reg=1):
+    exitcode = blr.dstack.pop(reg)
+    sys.exit(int(exitcode))
+
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
         args = reversed(blr.dstack.pop_n(n, reg))
@@ -154,10 +161,10 @@ for fid, n, fn in [ [ 50, 2, operator.add],
 
 
 
-# Is this sillines really called for?
-ll = locals()
-for l in dict(locals()):
-    if not l.startswith('__') and l not in ["stdlib", "ll"]:
-        del ll[l]
-del ll
-
+## Is this sillines really called for?
+#ll = locals()
+#for l in dict(locals()):
+#    if not l.startswith('__') and l not in ["stdlib", "ll"]:
+#        del ll[l]
+#del ll
+#

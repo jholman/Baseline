@@ -53,7 +53,6 @@ pipes
 [ ] 24      open unix socket
 [ ] 25      open TCP socket
 [ ] 27      send UDP datagram
-[ ] 29      sys.exit                    takes one int if avail, defaults to 0
     
 flowcontrol
     30      call (unconditional)
@@ -61,6 +60,7 @@ flowcontrol
     32      if-then-else
 [ ] 34      goto
 [ ] 35      recurse call (to self)
+[ ] 39      sys.exit                    takes one int if avail, defaults gracefully to 0
 
 arithmetic
     50      +
