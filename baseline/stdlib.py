@@ -98,20 +98,22 @@ def flow_call(blr, reg=1):
 
 @standard(31)
 def flow_call_if(blr, reg=1):
-    flag = blr.dstack.pop(reg)
+    trueopt, flag = blr.dstack.pop(reg), blr.dstack.pop(reg)
+    if flag is None:            # refuses to do anything if there aren't enough args on the stack
+        return
     if flag:
+        blr.dstack.append(trueopt, reg)
         stdlib[30](blr, reg)
-    else:
-        blr.dstack.pop(reg)
 
 @standard(32)
 def flow_call_ifelse(blr, reg=1):
-    flag = blr.dstack.pop(reg)
-    iffalse, iftrue = blr.dstack.pop_n(2, reg)
+    falseopt, trueopt, flag = blr.dstack.pop(reg), blr.dstack.pop(reg), blr.dstack.pop(reg)
+    if flag is None:            # refuses to do anything if there aren't enough args on the stack
+        return
     if flag:
-        blr.dstack.append(iftrue, reg)
+        blr.dstack.append(trueopt, reg)
     else:
-        blr.dstack.append(iffalse, reg)
+        blr.dstack.append(falseopt, reg)
     stdlib[30](blr, reg)
 
 @standard(39)
@@ -121,6 +123,7 @@ def flow_exit(blr, reg=1):
 
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
+        # TODO: should refuses to do anything if there aren't enough args on the stack
         args = reversed(blr.dstack.pop_n(n, reg))
         ans = fn (*args)
         if ans is True: ans = 1

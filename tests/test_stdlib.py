@@ -39,7 +39,7 @@ class TestStdlib():
         pass
 
     def test_flowcontrol(self):
-        '''Test stdlib functions 30-35 (flow control)'''        # TODO: 34 and 35
+        '''Test stdlib functions 30-35 (flow control)'''        # TODO: 33-35, 39
         prog = ["¹⁰⁰ ⁼ ⁽⁽¹¹⁵ ¹⁰¹ ¹²¹⁾⁾ ⁽¹⁾ ²¹ ¹",                       # print "yes" to stdout
                 "¹⁰¹ ⁼ ⁽⁽¹¹¹ ¹¹⁰⁾⁾ ⁽¹⁾ ²¹ ¹",                           # print "no" to stdout
                 "⁰ ⁼ ⁽¹⁰⁰⁾ ³⁰",                                         # test dynamic function call
@@ -47,14 +47,14 @@ class TestStdlib():
                 ]
         assert self._runprogram(prog) == "yes"
 
-        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁾ ³¹"                                      # test if(True)
+        prog[3] = "⁰ ⁼ ⁽¹ ¹⁰⁰⁾ ³¹"                                      # test if(True)
         assert self._runprogram(prog) == "yes"
-        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ⁰⁾ ³¹"                                      # test if(False)
+        prog[3] = "⁰ ⁼ ⁽⁰ ¹⁰⁰⁾ ³¹"                                      # test if(False)
         assert self._runprogram(prog) == ""
 
-        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁰¹ ¹⁾ ³²"                                      # test if(True)
+        prog[3] = "⁰ ⁼ ⁽¹ ¹⁰⁰ ¹⁰¹⁾ ³²"                                      # test if(True)
         assert self._runprogram(prog) == "yes"
-        prog[3] = "⁰ ⁼ ⁽¹⁰⁰ ¹⁰¹ ⁰⁾ ³²"                                      # test if(False)
+        prog[3] = "⁰ ⁼ ⁽⁰ ¹⁰⁰ ¹⁰¹⁾ ³²"                                      # test if(False)
         assert self._runprogram(prog) == "no"
 
 

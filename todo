@@ -1,5 +1,8 @@
 Tasks:
 [ ] finish the stdlib
+[ ] start work on the extlib
+    [ ] sprintf (one bit at a time)
+    [ ] looping constructs (may use stdlib 35?)
 [ ] catch up the unit testing
     [ ] unit-test entire stdlib via blackbox functional tests
         [ ] stack manip
@@ -17,6 +20,7 @@ Tasks:
     [ ] maybe non-decimal literals?     ⁰ˣ⁴ᵇᶜ³ ₀ₓ₁ₐ₂    subscript is missing {bcdf} though...
     [ ] maybe scientific-notation literals?         
     [ ] convert I/O to UTF-8 (incl stop using chr())
+[ ] upgrade the function nametable to allow mixing of baseline/python implementations
 [ ] coding utilities
     [ ] string converter
     [ ] vim plugin for program entry
@@ -58,6 +62,7 @@ flowcontrol
     30      call (unconditional)
     31      if-then
     32      if-then-else
+[ ] 33      return
 [ ] 34      goto
 [ ] 35      recurse call (to self)
 [ ] 39      sys.exit                    takes one int if avail, defaults gracefully to 0
