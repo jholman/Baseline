@@ -11,6 +11,7 @@ from baseline import runtime, transforms
 
 class TestStdlib():
     def _runprogram(self, definitions):
+        # TODO: this testing paradigm doesn't appear to notice when the baseline interpreter crashes?
         fns = dict(filter(None, (transforms.parse_fundef(unicode(f, 'utf-8')) for f in definitions)))
         env = runtime.BaselineRuntime(fundefs = fns)
         capture = StringIO.StringIO()
@@ -38,8 +39,8 @@ class TestStdlib():
         # TODO
         pass
 
-    def test_flowcontrol(self):
-        '''Test stdlib functions 30-35 (flow control)'''        # TODO: 33-35, 39
+    def test_conditionals(self):
+        '''Test stdlib functions 30-32 (conditionals)'''
         prog = ["¹⁰⁰ ⁼ ⁽⁽¹¹⁵ ¹⁰¹ ¹²¹⁾⁾ ⁽¹⁾ ²¹ ¹",                       # print "yes" to stdout
                 "¹⁰¹ ⁼ ⁽⁽¹¹¹ ¹¹⁰⁾⁾ ⁽¹⁾ ²¹ ¹",                           # print "no" to stdout
                 "⁰ ⁼ ⁽¹⁰⁰⁾ ³⁰",                                         # test dynamic function call
@@ -57,6 +58,9 @@ class TestStdlib():
         prog[3] = "⁰ ⁼ ⁽⁰ ¹⁰⁰ ¹⁰¹⁾ ³²"                                      # test if(False)
         assert self._runprogram(prog) == "no"
 
+    def test_flowctl_extra(self):
+        '''Test stdlib functions 33-37 (exotic flow control)'''     # TODO: 33-35, maybe also 39
+        pass
 
 
     def test_arith(self): 

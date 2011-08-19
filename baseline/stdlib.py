@@ -2,11 +2,16 @@
 # all functions take a Baseline Runtime as their sole argument
 
 import sys
+from pprint import pprint
 
 stdlib = {}
 
 ## TODO: almost the entire stdlib does insane shit if passed a negative number
 ###             later observation: I think when I wrote this, I meant the stack_ parts?
+
+## TODO: similar concern for floats.  so cast everything relevant to int.
+
+## TODO: also, go through looking for places where insufficient-arguments-on-stack should cause it react meaningfully
 
 
 def standard(n):
@@ -116,6 +121,25 @@ def flow_call_ifelse(blr, reg=1):
         blr.dstack.append(falseopt, reg)
     stdlib[30](blr, reg)
 
+@standard(33)
+def flow_return(blr, reg=1):
+    blr.rstack.pop()
+    blr.rstack.pop()
+
+@standard(34)
+def flow_return_n(blr, reg=1):
+    n = blr.dstack.pop(reg)
+    if n is None:            # refuses to do anything if there aren't enough args on the stack
+        return
+    for i in range(n):
+        stdlib[33](blr, reg)
+    
+@standard(37)
+def flow_recurse(blr, reg=1):
+    # TODO: check for tail-call, and optimize by simply setting blr.rstack[-2] to zero
+    currfn = blr.rstack[-1]
+    blr.rstack.extend([0, currfn])
+
 @standard(39)
 def flow_exit(blr, reg=1):
     exitcode = blr.dstack.pop(reg)
@@ -124,7 +148,8 @@ def flow_exit(blr, reg=1):
 def make_n_ary_fn(fid, n, fn):
     def f(blr, reg=1):
         # TODO: should refuses to do anything if there aren't enough args on the stack
-        args = reversed(blr.dstack.pop_n(n, reg))
+        args = [a for a in reversed(blr.dstack.pop_n(n, reg))]
+        #print "<<  " + fn.__name__ + " " + str(tuple(args)) + "  >>"   ## debugging
         ans = fn (*args)
         if ans is True: ans = 1
         if ans is False: ans = 0

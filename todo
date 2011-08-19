@@ -30,6 +30,9 @@ Note:
 * my function nametable doesn't allow mixed baseline/python implementations, which was a goal
 * current CI command-line (after `shopt -s globstar`):
     pywatch 'echo "\n\n\n\n\n\n\n\n\n\n\n";date ; py.test -v' **/*.py bin/*
+* using recurse for looping means that multi-return out of a loop behaves badly
+    * i.e. executing it depends on knowing how many times we already ran the loop
+    * and tail-call optimization will fix this, which might make it mandatory
 
 
 Stdlib Catalog:
@@ -62,10 +65,11 @@ flowcontrol
     30      call (unconditional)
     31      if-then
     32      if-then-else
-[ ] 33      return
-[ ] 34      goto
-[ ] 35      recurse call (to self)
-[ ] 39      sys.exit                    takes one int if avail, defaults gracefully to 0
+[✓] 33      return
+[✓] 34      return-n
+[ ] 36      goto
+[✓] 37      recurse call (to self)
+[✓] 39      sys.exit                    takes one int if avail, defaults gracefully to 0
 
 arithmetic
     50      +
@@ -92,11 +96,11 @@ bitwise arithmetic
     75      >>
 
 comparisons
-    81      <
-    82      <=
-    83      ==
-    84      >=
-    85      >
-[ ] 86      !=
+    80      <
+    81      <=
+    82      ==
+    83      >=
+    84      >
+    85      !=
 
 
