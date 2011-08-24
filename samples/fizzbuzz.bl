@@ -1,0 +1,32 @@
+
+Main function!
+⁰ ⁼ ₍₄₀₎ ¹⁰⁰                     Define size of fizzbuzz, and then get started
+
+¹⁰⁰ ⁼ ⁽⁰⁾ ¹⁰¹                   Initialize loopcounter, execute helper
+¹⁰¹ ⁼ ⁽¹⁾ ⁵⁰ ²²⁰ ¹⁰² ⁽³⁷⁾ ³¹    Increment loopcounter, do output, conditionally recurse
+¹⁰² ⁼ ⁽²⁾ ¹² ⁸⁵                 Test: are the top two elements unequal?
+
+
+Now several sub-sections: all to "do output"
+
+First, the four categories of FizzBuzz output:
+²¹⁰ ⁼ ⁽⁽¹⁰ ¹²² ¹²² ¹⁰⁵ ⁷⁰⁾⁾ ²⁹⁹                     Print "Fizz"
+²¹¹ ⁼ ⁽⁽¹⁰ ¹²² ¹²² ¹¹⁷ ⁶⁶⁾⁾ ²⁹⁹                     Print "Buzz"
+²¹³ ⁼ ² ⁴⁵⁰ ²⁹⁹ ⁽⁽¹⁰⁾⁾ ²⁹⁹                          Print the number itself, using fancy #450
+²¹⁴ ⁼ ⁽⁽¹⁰ ¹²² ¹²² ¹¹⁷ ⁶⁶ ¹²² ¹²² ¹⁰⁵ ⁷⁰⁾⁾ ²⁹⁹      Print "FizzBuzz"
+
+Now some code to switch between them
+²²⁰ ⁼ ² ⁽³⁾ ⁵⁴ ⁽²²¹ ²²²⁾ ³²                     If not a multiple of 3, do 221, else do 222
+²²¹ ⁼ ² ⁽⁵⁾ ⁵⁴ ⁽²¹³ ²¹¹⁾ ³²                     So not mod-3.   If not a multiple of 5, do 213 (Number out), else do 211 ('Buzz')
+²²² ⁼ ² ⁽⁵⁾ ⁵⁴ ⁽²¹⁰ ²¹⁴⁾ ³²                     So it IS mod-3. If not a multiple of 5, do 210 ('Fizz'), else do 214 ('FizzBuzz')
+
+Okay, here's the hard part: convert an int into a string on the stack.
+⁴⁵⁰ ⁼ ⁽¹⁾⁵⁽⁰⁾⁴⁶¹₁ ₃⁷            Convert POSITIVE integer to string:  initialize, call helper, clean up, re-merge
+⁴⁶¹ ⁼ ⁴⁶²₂₍₃₇₎₃₁                Do a digit (462), then conditionally recurse
+⁴⁶² ⁼ ₂₍₁₀₎₅₄ ₃⁽⁴⁸⁾⁵⁰₄₇₀ ₄₇₃    Move bottom%10 to top, increment antebottom, set bottom = bottom/10
+
+Misc helpers
+²⁹⁹ ⁼ ⁽¹⁾ ²¹ ¹                  print string to stdout
+⁴⁷⁰ ⁼ ⁽²⁾⁵₍₁₎₅₀⁷                Add one to second-from-top
+⁴⁷³ ⁼ ⁽¹⁰⁾⁵³                    Make top = top/10
+
